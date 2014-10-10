@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "*",
-    "twitter": "*", 
+    "twit": "*", 
     "morgan": "*",
     "body-parser": "*",
     "hogan-express": "*" 

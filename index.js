@@ -17,15 +17,18 @@ app.enable('view cache');
 app.engine('html', require('hogan-express'));
 
 var T = new Twit({
-    consumer_key:         '...'
-  , consumer_secret:      '...'
-  , access_token:         '...'
-  , access_token_secret:  '...'
+    consumer_key:         'rVbhHqZ2ohpqfG1LfIFGUYqPj', 
+    consumer_secret:      'jsA6co3nRkFMSfJbUcFIP2JnxZflOXnJB3EiokJrqqst7Kazq9', 
+    access_token:         '180828652-NGg0NjgZLw0i3u7qS7OUlDREewv1D8dDcjyqOCEg', 
+    access_token_secret:  'AaMVy2p1ebA8NPgFOnLJWRKSri0tmJvZuBfJxqZN1B1qq'
 });
 
 app.get('/', function(req, res){
 
-
+  T.get('lists/ownerships', {screen_name: "aginganinja"}, function(err, data, response){
+    console.log(err);
+    console.log(data);
+  });
 
   res.render('index', {
     title: 'Home'
@@ -35,3 +38,4 @@ app.get('/', function(req, res){
 app.listen(port);
 console.log('Magic happens on port ' + port);
 exports = module.exports = app;
+
