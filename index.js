@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('combined'));
+
 app.set('view engine', 'html');
 app.enable('view cache');
 app.engine('html', require('hogan-express'));
@@ -23,6 +24,8 @@ var T = new Twit({
     access_token_secret:  'AaMVy2p1ebA8NPgFOnLJWRKSri0tmJvZuBfJxqZN1B1qq'
 });
 
+
+
 app.get('/', function(req, res){
 
   T.get('lists/ownerships', {screen_name: "aginganinja"}, function(err, data, response){
@@ -32,6 +35,16 @@ app.get('/', function(req, res){
 
   res.render('index', {
     title: 'Home'
+  });
+});
+
+app.get('/user/:user_name', function(req, res){
+  //var user = req.params.user_name;
+  T.get('lists/ownerships', {screen_name: "aginganinja"}, function(err, data, response){
+    res.render('list', {
+      title: 'My Lists',
+      partials: {user_data: data, title: 'My Lists'}
+  });
   });
 });
 
