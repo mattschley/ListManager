@@ -16,26 +16,23 @@ module.exports = function(app) {
 
   app.get('/', function(req, res){
 
-    T.get('lists/ownerships', {screen_name: "aginganinja"}, function(err, data, response){
-      console.log(err);
-      console.log(data);
-    });
+    // T.get('lists/ownerships', {screen_name: "cg3ntry"}, function(err, data, response){
+    //   console.log(data.lists[0]);
+    //   console.log('\n\n\n');
+    //   console.log('=============================');
 
-    res.render('index', {
-      title: 'Home'
+    //   T.get('lists/members', {list_id: data.lists[0].id}, function(err, data, response){
+    //     console.log(data);
+    //   });
+
+    // });
+    
+    T.get('lists/members', {list_id: 172176744}, function(err, data, response){
+      res.locals = {header: "Hello World!", user_data: JSON.stringify(data)};
+      res.render('index', {
+        title: 'Home',
+        partials: {}
+      });
     });
   });
-
-  app.get('/user/:user_name', function(req, res){
-    //var user = req.params.user_name;
-    T.get('lists/ownerships', {screen_name: "ninatypewriter"}, function(err, data, response){
-      console.log (data);
-      console.log ("\n\n\n");  
-    });
-
-    res.render('list', {
-      title: 'My Lists',
-      partials: {user_data: data, title: 'My Lists'}
-    });
-  });
-}
+} 

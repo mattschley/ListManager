@@ -16,7 +16,6 @@ app.set('view engine', 'html');
 app.enable('view cache');
 app.engine('html', require('hogan-express'));
 
-
 require('./routes')(app);
 
 app.listen(port);
