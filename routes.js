@@ -32,8 +32,12 @@ module.exports = function(app) {
     T.get('lists/members', {list_id: 172176744}, function(err, data, response){
       
       //CALL HELPER FUNCTION
+      var users = "";
+      for(var i = 0; i < data.users.length; i++){
+        users = users + data.users[i].screen_name + ",  ";
+      }
 
-      res.locals = {header: "Hello World!", user_data: JSON.stringify(data)};
+      res.locals = {header: "List: C3Gentry/Northwestern", user_data: JSON.stringify(data), user_list: users };
       res.render('index', {
         title: 'Home',
         partials: {}
