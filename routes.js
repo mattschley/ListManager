@@ -27,7 +27,12 @@ module.exports = function(app) {
 
     // });
     
+    //list id is for cg3ntry/northwestern
+
     T.get('lists/members', {list_id: 172176744}, function(err, data, response){
+      
+      //CALL HELPER FUNCTION
+
       res.locals = {header: "Hello World!", user_data: JSON.stringify(data)};
       res.render('index', {
         title: 'Home',
