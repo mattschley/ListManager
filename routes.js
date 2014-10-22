@@ -1,4 +1,5 @@
 var Twit = require ('twit');
+var Metrics = require('./metrics');
 
   var T = new Twit({
       consumer_key:         'rVbhHqZ2ohpqfG1LfIFGUYqPj', 
@@ -16,29 +17,14 @@ module.exports = function(app) {
 
   app.get('/', function(req, res){
 
-    // T.get('lists/ownerships', {screen_name: "cg3ntry"}, function(err, data, response){
-    //   console.log(data.lists[0]);
-    //   console.log('\n\n\n');
-    //   console.log('=============================');
-
-    //   T.get('lists/members', {list_id: data.lists[0].id}, function(err, data, response){
-    //     console.log(data);
-    //   });
-
-    // });
-    
-    //list id is for cg3ntry/northwestern
+    //list id for cg3ntry/northwestern: 172176744
 
     T.get('lists/members', {list_id: 172176744}, function(err, data, response){
       
-      //CALL HELPER FUNCTION
-      var users = "<p style='margin:0;'>";
-      for(var i = 0; i < data.users.length; i++){
-        users = users + "</p><p style='margin:0;'>"+data.users[i].screen_name;
-      }
-      users = users + "</p>";
+      metricsData = new Metrics(data);
+      
 
-      res.locals = {header: "List: C3Gentry/Northwestern", user_data: JSON.stringify(data), user_list: users };
+      res.locals = {};
       res.render('index', {
         title: 'Home',
         partials: {}
