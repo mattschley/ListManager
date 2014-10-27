@@ -23,8 +23,8 @@ for(i=0; i<userList.length; i++){
 
 	// add metric data to metrics attribute in JSON object
 	listMemberData.users[i].metrics = {"ff_ratio": ff_ratio, "verified" : verified, "last_active" : last_tweet_time_date, "num_lists_on" : listed_count, "how_often_tweet" : "tbd"};
-
 }
+return listMemberData;
 console.log(userList);
   /*
     CALL FUNCTIONS HERE

@@ -1,12 +1,24 @@
 <html>
+    <style>
+        li{
+            list-style: none;
+            width:45%;
+            display:inline-block;
+            margin-bottom:15px;
+        }
+    </style>
   <body>
-    <h1>{{ header }}</h1>
-    <h3>Users on the list</h3>
-    <p>{{{ user_list }}}</p>
+    <h1>@{{ userName }}: {{listName}}</h1>
     <br>
-    <br>
-    <br>
-    <h3>JSON Data:</h3>
-    <p>{{user_data}}</p>
+    <ul>
+    {{# userData }}
+        <li>
+            <h3>Name: @{{screen_name}}</h3>
+            <p><strong>Follower ratio:</strong> {{ metrics.ff_ratio }}</p>
+            <p><strong>Verified: </strong>{{^ metrics.verified }} not {{/ metrics.verified }} verified</p>
+            <p><strong>Number of other listings: </strong>{{ metrics.num_lists_on }}</p>
+        </li>
+    {{/ userData }}
+    </ul>
   </body>
 </html>
