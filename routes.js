@@ -16,19 +16,28 @@ module.exports = function(app) {
   });
 
   app.get('/', function(req, res){
-
     //list id for cg3ntry/northwestern: 172176744
 
-    T.get('lists/members', {list_id: 172176744}, function(err, data, response){
-      
-      metricsData = new Metrics(data);
-      
+    var listData;
+    var userData;
 
-      res.locals = {};
-      res.render('index', {
-        title: 'Home',
-        partials: {}
-      });
+    T.get('lists/members', {slug: 'northwestern', owner_screen_name: 'cg3ntry', count: 5000}, function(err, data, response){
+    
+      listData = data;  
+
+      T.get('users/show', {screen_name: 'cg3ntry'}, function(err, data, response){
+        
+        userData = data;
+        listData.user_info = userData;
+
+        var dataWithMetrics = new Metrics(listData);
+        
+        res.locals = {listName: "Northwestern", userName: "cg3ntry", userData: dataWithMetrics.users};
+        res.render('index', {
+          title: 'Home',
+          partials: {}
+        });
+      })
     });
   });
 } 
