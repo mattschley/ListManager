@@ -22,7 +22,8 @@ for(i=0; i<userList.length; i++){
 	var last_tweet_time_date = userList[i].status.created_at;
 
 	// add metric data to metrics attribute in JSON object
-	listMemberData.users[i].metrics = {"ff_ratio": ff_ratio, "verified" : verified, "last_active" : last_tweet_time_date, "num_lists_on" : listed_count, "how_often_tweet" : "tbd"};
+	listMemberData.users[i].metrics = {"followers": followers_count, "following": following, "ff_ratio": ff_ratio, "verified" : verified, "last_active" : last_tweet_time_date, "num_lists_on" : listed_count, "how_often_tweet" : "tbd", 
+	"created_at": created_at, "location": location, "statuses_count": statuses_count};
 
 }
 console.log(userList);
