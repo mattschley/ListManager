@@ -46,6 +46,7 @@ module.exports = function(app) {
         for (var i=0; i < dataWithMetrics.users.length; i++){
           console.log(dataWithMetrics.users[i].screen_name);
           console.log(dataWithMetrics.users[i].metrics);
+          console.log("\n");
         }
         
         res.locals = {listName: listName, userName: userName, userData: dataWithMetrics.users};
