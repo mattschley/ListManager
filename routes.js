@@ -3,7 +3,7 @@ var Metrics = require('./metrics');
 var Statuses = require('./statuses')
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
-var fs = require('fs');
+
 
   var T = new Twit({
       consumer_key:         CONSUMERKEY, 
