@@ -1,0 +1,43 @@
+body {
+  text-align: center;
+}
+
+.nav {
+  width: 1235px;
+  height: 100px;
+  text-align: right;
+  margin: 50px 100px auto 100px;
+  border-bottom: 2px solid black;
+}
+
+.nav h3 {
+  float: left;
+  font-family: Minion Pro, sans-serif;
+  color: orange;
+  font-size: 50px;
+  margin-top: 50px;
+}
+
+.dropdown {
+  margin-top: 50px;
+  float: right;
+}
+
+.col-container {
+  margin: 0px 5px 20px 5px;;
+  text-align: center;
+  vertical-align: center;
+  position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.col {
+  width: 400px;
+  height: 700px;
+  margin: 0px 5px 0px 5px;
+  display: inline-block;
+  float: none;
+  border-radius: 5px;
+  border: 1px solid black;
+}
