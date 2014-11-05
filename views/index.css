@@ -1,0 +1,17 @@
+.col-container {
+  text-align: center;
+  vertical-align: center;
+  position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.col {
+  width: 400px;
+  height: 700px;
+  display: inline-block;
+  float: none;
+  border-radius: 5px;
+  margin: 0px 5px 0px 5px;
+  border: 1px solid black;
+}
