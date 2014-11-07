@@ -12,7 +12,8 @@
     "twit": "*", 
     "morgan": "*",
     "body-parser": "*",
-    "hogan-express": "*" 
+    "hogan-express": "*",
+    "mongoose": "*"
   },
   "author": "David Ryan",
   "license": "ISC",
