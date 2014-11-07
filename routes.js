@@ -23,7 +23,7 @@ module.exports = function(app) {
     //list id for cg3ntry/northwestern: 172176744
 
     var userName = 'funnelist338';
-    var listName = 'Finance';
+    var listName = 'Northwestern';
 
     var listData;
     var userData;
