@@ -8,6 +8,7 @@ module.exports = function(statusData){
  
 var statuses = statusData; 
 var count = 0; 
+var statuses_string = JSON.stringify(statusData);
 console.log(statusData);
 console.log(statusData.length);
 for(i=0; i<statusData.length; i++){
@@ -35,7 +36,7 @@ count = count + 1;
 	// "created_at": created_at, "location": location, "statuses_count": statuses_count, "frequency" : frequency};
 
 }
-fs.writeFile("../statuses.txt", "Hey there!", function(err) {
+fs.writeFile("statuses.txt", statuses_string, function(err) {
     if(err) {
         console.log(err);
     } else {
