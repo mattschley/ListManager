@@ -5,9 +5,10 @@
 */
 var fs = require('fs');
 module.exports = function(statusData){
- 
+
 var statuses = statusData; 
-var count = 0; 
+var count = 0;  
+var statuses_string = JSON.stringify(statusData);
 console.log(statusData);
 console.log(statusData.length);
 for(i=0; i<statusData.length; i++){
@@ -30,19 +31,25 @@ for(i=0; i<statusData.length; i++){
 	// var days = hours/24;
 	// var frequency = statuses_count/days;
 	// // add metric data to metrics attribute in JSON object
-count = count + 1;
+if(statusData[i].text.contains('golf')){
+	var relevant_tweet = statusData[i];
+	console.log(relevant_tweet);
+	count = count + 1;
+	console.log("printed:"+count);
+} 
+
+
 	// listMemberData.users[i].metrics = {"followers": followers_count, "following": following, "ff_ratio": ff_ratio, "verified" : verified, "last_active" : last_tweet_time_date, "num_lists_on" : listed_count, "how_often_tweet" : "tbd", 
 	// "created_at": created_at, "location": location, "statuses_count": statuses_count, "frequency" : frequency};
 
 }
-fs.writeFile("../statuses.txt", "Hey there!", function(err) {
+fs.writeFile("statuses.txt", statusData, function(err) {
     if(err) {
         console.log(err);
     } else {
         console.log("The file was saved!");
     }
 }); 
-
 console.log(count);
 
   /*

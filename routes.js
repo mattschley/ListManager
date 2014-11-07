@@ -34,7 +34,7 @@ module.exports = function(app) {
     //list id for cg3ntry/northwestern: 172176744
 
     var userName = 'funnelist338';
-    var listName = 'Northwestern';
+    var listName = 'Golf';
 
     var listData;
     var userData;
