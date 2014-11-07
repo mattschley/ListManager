@@ -1,7 +1,9 @@
 var Twit = require ('twit');
 var Metrics = require('./metrics');
+var Statuses = require('./statuses')
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
+
 
   var T = new Twit({
       consumer_key:         CONSUMERKEY, 
@@ -27,6 +29,7 @@ module.exports = function(app) {
 
     var listData;
     var userData;
+    var statusData;
 
     T.get('lists/members', {slug: listName, owner_screen_name: userName, count: 5000}, function(err, data, response){
     
@@ -56,6 +59,20 @@ module.exports = function(app) {
         });
       })
     });
+
+    T.get('lists/statuses', {slug: listName, owner_screen_name: userName, count: 5000}, function(err, data, response){
+    
+      if(err){
+        console.log("ERR IS HERE: "+err);
+      }
+
+      statusData = data;  
+
+      var dataWithStatuses = new Statuses(statusData);
+      //console.log(statusData);
+    });
+
+
   });
 
   // app.get('/add', function (req, res){
