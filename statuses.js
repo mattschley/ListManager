@@ -9,8 +9,8 @@ module.exports = function(statusData){
 var statuses = statusData; 
 var count = 0;  
 var statuses_string = JSON.stringify(statusData);
-console.log(statusData);
-console.log(statusData.length);
+//console.log(statusData);
+//console.log(statusData.length);
 for(i=0; i<statusData.length; i++){
 	// var user = userList[i];
 	// var location = userList[i].location;
@@ -31,7 +31,8 @@ for(i=0; i<statusData.length; i++){
 	// var days = hours/24;
 	// var frequency = statuses_count/days;
 	// // add metric data to metrics attribute in JSON object
-if(statusData[i].text.contains('golf')){
+	var test = statusData[i].text.toString(); 
+if(test.indexOf('golf') > -1){
 	var relevant_tweet = statusData[i];
 	console.log(relevant_tweet);
 	count = count + 1;
