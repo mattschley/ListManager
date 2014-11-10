@@ -28,7 +28,7 @@ module.exports = function(app) {
   });
 
   app.get('/', function(req, res){
-    return;
+//    return;
     //list id for cg3ntry/northwestern: 172176744
 
     var userName = 'funnelist338';
