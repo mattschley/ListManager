@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 var ListSchema = new Schema({
   username: String,
-  tweet: String, 
-  tweeted_at: Date
+  listname: String
 });
 
 module.exports = mongoose.model('List', ListSchema);

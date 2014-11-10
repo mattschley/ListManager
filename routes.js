@@ -1,7 +1,8 @@
 var Twit = require ('twit');
 var Metrics = require('./metrics');
 var Statuses = require('./statuses');
-var listDB = require('./models/ipsum.js');
+var listDB = require('./models/list.js');
+var tweetDB = require('./models/list.js');
 
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
@@ -20,6 +21,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   // yay!
 });
+
+
+//.find(), .save()
 
 
 
