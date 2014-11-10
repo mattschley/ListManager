@@ -2,9 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TweetSchema = new Schema({
-  username: String,
+  listusername: String,
   listname: String,
+  username: String,
+  isretweetof: String,
   tweet: String, 
+  tweetid: Number,
   tweeted_at: Date, 
   urls: Array, 
   mentions: Array, 
