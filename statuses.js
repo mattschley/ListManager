@@ -14,15 +14,15 @@ var statuses_string = JSON.stringify(statusData);
 for(i=0; i<statusData.length; i++){
 	
   var test = statusData[i].text.toString(); 
-  if(test.indexOf('golf') > -1){
+  if(test.indexOf('golf') > -1 ||test.indexOf('pga') > -1 ||test.indexOf('swing') > -1 ){
     var relevant_tweet = statusData[i];
     console.log(relevant_tweet);
     count = count + 1;
     console.log("printed:"+count);
   } 
-  
+
 }
-fs.writeFile("statuses.txt", statusData, function(err) {
+fs.writeFile("statuses.txt", test, function(err) {
     if(err) {
         console.log(err);
     } else {
