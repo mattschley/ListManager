@@ -4,6 +4,7 @@
 
 */
 var fs = require('fs');
+
 module.exports = function(statusData){
 
 var statuses = statusData; 
