@@ -47,22 +47,25 @@ module.exports = function(app) {
       listData = data;  
 
       T.get('users/show', {screen_name: userName}, function(err, data, response){
-        
         userData = data;
         listData.user_info = userData;
-
         var dataWithMetrics = new Metrics(listData);
+        tweetDB.find().lean().exec(function(err, data) {
+          if(err)
+            console.log('err accessing tweetdb');
+          
+          var timelineData = data;
+          
+          console.log(JSON.stringify(dataWithMetrics.users[0]));
 
-        for (var i=0; i < dataWithMetrics.users.length; i++) {
-          console.log(dataWithMetrics.users[i].screen_name);
-          console.log(dataWithMetrics.users[i].metrics);
-          console.log("\n");
-        }
-        
-        res.locals = {listName: listName, user_name: userName, userData: dataWithMetrics.users};
-        res.render('index', {
-          title: 'Home',
-          partials: {}
+          res.locals = {
+            timeline: timelineData,
+            users: dataWithMetrics.users
+          };
+          res.render('testindex', {
+            title: '@' + userName + '/' + listName,
+            partials: {}
+          });
         });
       })
     });
@@ -92,15 +95,7 @@ module.exports = function(app) {
 
     //last update 2:50am, https://twitter.com/NBA/status/531687734604492800
     var sinceid = 531687734604492800; //
-    
-    if(true){
-      res.locals = {user_data: "updating turned off for now"}
-      res.render('list', {
-        title: 'Home',
-        partials: {}
-      });    
-      return;
-    }
+     
 
 
     T.get('lists/statuses', {slug: listName, owner_screen_name: userName, since_id: sinceid, include_rts: false}, function(err, data, response){
