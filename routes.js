@@ -4,6 +4,7 @@ var Statuses = require('./statuses');
 var listDB = require('./models/list.js');
 var tweetDB = require('./models/tweet.js');
 var mongoose = require('mongoose');
+var dictionary = require('./dictionary.js')
 
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
@@ -55,7 +56,7 @@ module.exports = function(app) {
             console.log('err accessing tweetdb');
           
           var timelineData = data;
-          
+          var dictUserData = dictionary(listData, timelineData);
           console.log(JSON.stringify(dataWithMetrics.users[0]));
 
           res.locals = {
