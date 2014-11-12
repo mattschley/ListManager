@@ -14,10 +14,10 @@ for(i=0; i < length; i++){
   if(test.indexOf('golf') > -1 ||test.indexOf('pga') > -1 ||test.indexOf('swing') > -1|| test.indexOf('course') > -1){
     var relevant_tweet = tweet_data[i];
     var relevant_user_id = relevant_tweet.username;
-    for(j=0; j < listData.length; j++){
+    for(j=0; j < listData.users.length; j++){
     	if(listData.users[j].screen_name == relevant_user_id){
     		var count = listData.users[j].metrics.dictionaryHits; 
-    		console.log(count); 
+    		//console.log(count); 
     		var count = count + 1; 
     		listData.users[j].metrics.dictionaryHits = count; 
     	}
@@ -29,5 +29,5 @@ for(i=0; i < length; i++){
 //console.log("number of tweets is:" + length);
 //console.log(listData.users[1]);
 //console.log(cat);
-//console.log(listData);
+console.log(listData);
 }
