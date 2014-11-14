@@ -5,6 +5,7 @@ var listDB = require('./models/list.js');
 var tweetDB = require('./models/tweet.js');
 var mongoose = require('mongoose');
 var dictionary = require('./dictionary.js')
+var mentions = require('./mentions.js')
 
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
@@ -57,11 +58,13 @@ module.exports = function(app) {
           
           var timelineData = data;
           var dictUserData = dictionary(listData, timelineData);
-          console.log(JSON.stringify(dataWithMetrics.users[0]));
+          var mentionsData = mentions(timelineData);
+          // console.log(JSON.stringify(dataWithMetrics.users[0]));
 
           res.locals = {
             timeline: timelineData,
             users: dataWithMetrics.users
+            // suggestions: mentionsData
           };
           res.render('testindex', {
             title: '@' + userName + '/' + listName,
