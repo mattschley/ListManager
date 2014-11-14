@@ -19,15 +19,22 @@ for(i=0; i < length; i++){
     		var count = listData.users[j].metrics.dictionaryHits; 
     		//console.log(count); 
     		var count = count + 1; 
+    		//console.log("count is:"+count+ "for user:"+listData.users[j].screen_name+"and relev:"+relevant_user_id);
     		listData.users[j].metrics.dictionaryHits = count; 
     	}
     }
-    console.log("user is: " +relevant_user_id);
+
   } 
+
 }
 //console.log(tweet_data);
 //console.log("number of tweets is:" + length);
 //console.log(listData.users[1]);
 //console.log(cat);
-console.log(listData);
+//console.log(listData);
+// for(j=0; j < listData.users.length; j++){
+//     		var count = listData.users[j].metrics.dictionaryHits;
+//     		var name = listData.users[j].screen_name; 
+//     		console.log("User "+ name +" has "+count+" dictionaryHits"); }
+console.log(JSON.stringify(listData));
 }
