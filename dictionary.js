@@ -36,5 +36,6 @@ for(i=0; i < length; i++){
 //     		var count = listData.users[j].metrics.dictionaryHits;
 //     		var name = listData.users[j].screen_name; 
 //     		console.log("User "+ name +" has "+count+" dictionaryHits"); }
-console.log(JSON.stringify(listData));
+//console.log(JSON.stringify(listData));
+// listData contains num of DictionaryHits... would be nice to add specific hits 
 }
