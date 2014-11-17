@@ -9,6 +9,13 @@
   margin-bottom: 20px;
 }
 
+.timeline{
+  padding: 0;
+  list-style: none;
+  max-height:1400px;
+  overflow: scroll;
+}
+
 .timeline li {
   border: 1px solid gray;
   border-radius: 5px;
@@ -17,10 +24,6 @@
   box-shadow: 0 0 5px #888888;
 }
 
-.timeline{
-  padding: 0;
-  list-style: none;
-}
 
 .timeline p{
   font-size:12px;
