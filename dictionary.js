@@ -18,7 +18,7 @@ for(i=0; i < length; i++){
     	if(listData.users[j].screen_name == relevant_user_id){
     		var count = listData.users[j].metrics.dictionaryHits; 
     		//console.log(count); 
-    		var count = count + 1; 
+    		var count = count + 1;  
     		//console.log("count is:"+count+ "for user:"+listData.users[j].screen_name+"and relev:"+relevant_user_id);
     		listData.users[j].metrics.dictionaryHits = count; 
     	}
