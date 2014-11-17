@@ -52,7 +52,9 @@
   border: 1px solid gray;
   border-radius: 5px;
   padding: 10px; 
-  box-shadow: 0 0 5px #888888;
+  box-shadow: 0 0 5px #888888; 
+   max-height:1400px;
+  overflow: scroll;
 }
 
 .user-list .row{

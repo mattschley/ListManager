@@ -3,6 +3,8 @@ var Metrics = require('./metrics');
 var Statuses = require('./statuses');
 var tweetDB = require('./models/tweet.js');
 var mongoose = require('mongoose');
+var dictionary = require('./dictionary.js')
+var mentions = require('./mentions.js')
 
 var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
 var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
@@ -19,6 +21,19 @@ var T = new Twit({
 mongoose.connect('mongodb://admin:eecs338@ds051990.mongolab.com:51990/heroku_app30534609');
 
 
+function renderPage(res, timelineData, dataWithMetrics, userMentions, userName, listName){
+  res.locals = {
+    timeline: timelineData,
+    users: dataWithMetrics.users,
+    mentions: userMentions.slice(0, 20)
+  };
+  res.render('index', {
+  title: '@' + userName + '/' + listName,
+  partials: {}
+  });
+
+}
+
 module.exports = function(app) {
 
   app.use(function(req, res, next){
@@ -26,128 +41,54 @@ module.exports = function(app) {
     next();
   });
 
-  // app.get('/'){
-    
-  //   landing page
-    
-  // }
+  app.get('/', function(req, res) {
+    res.render('home', {
+      title: 'Welcome!',
+      partials: {}
+    });
+  });
 
-  app.get('/', function(req, res){
-    var userName = 'ninatypewriter';
-    var listName = 'Microsoft';
-    /*
-      ^^^^ going to get refactored ^^^^
-    */
+  app.post('/', function(req, res){
+    var userName = req.body.user;
+    var listName = req.body.list;
+
     var listData;
     var userData;
     var statusData;
 
-    var d = new Date();
-    var daysAgo = d.setDate(d.getDate() - 2);
-
-    /*
-      GET TO 500 TWEETS?
-  
-    */
-
-
-    var addToDB = function(listname, username, max_ID){
-      T.get('lists/statuses', {slug: listname, owner_screen_name: username, include_rts: false, max_id: max_ID, count: 300}, function(err, statusData, response){
-        if(err){
-          console.log("ERR IS HERE: "+err);
-        }
-
-        var oldestTweetId = max_ID;
-        var oldestTweetedAt = null;
-        var oldestTweet = null;
-
-        console.log(statusData.length);
-
-        for(var i = 0; i < statusData.length; i++){
-          var tweet = new tweetDB();
-          tweet.listusername = username;
-          tweet.listname = listname;
-          tweet.username = statusData[i].user.screen_name;
-          tweet.tweetid = statusData[i].id;
-          tweet.tweet = statusData[i].text;
-          tweet.tweeted_at = statusData[i].created_at;
-          tweet.urls = statusData[i].entities.urls;
-          tweet.mentions = statusData[i].entities.user_mentions;
-          tweet.favorites = statusData[i].favorite_count;
-          tweet.retweets = statusData[i].retweet_count;
-          // tweet.save(function(err){
-          // if(err)
-          //     console.log ("TWEET POSTING ERROR");
-          // });
-          if (oldestTweetId > statusData[i].id){
-            oldestTweetId = statusData[i].id;
-            oldestTweetedAt = statusData[i].created_at;
-            oldestTweet = statusData[i];
-
-          }
-        }
-        console.log({oldestId: oldestTweetId, oldestDate: oldestTweetedAt});
-        return {oldestId: oldestTweetId, oldestDate: oldestTweetedAt};
-      });
-    }
-
-
-    tweetDB.find({listusername: userName, listname: listName}).where('tweeted_at').gt(daysAgo).exec(function(err, data){
-      if(err){
-        console.log("there was an error");
-      }
-      if (data.length == 0){
-        console.log('there was no data');
-
-        var x = addToDB(listName, userName, 532989025553248256);
-
-      }
-      else{
-        console.log('there was data');
-        console.log(data);
-      }
-
-    });
-
-    // T.get('lists/members', {slug: listName, owner_screen_name: userName, count: 5000}, function(err, data, response){
+    T.get('lists/members', {slug: listName, owner_screen_name: userName, count: 5000}, function(err, data, response){
     
-    //   if(err){
-    //     console.log("ERR IS: "+err);
-    //   }
+      if(err){
+        console.log("ERR IS: "+err);
+        res.send("whoops");
+      }
 
-    //   listData = data;  
+      listData = data;  
 
-    //   T.get('users/show', {screen_name: userName}, function(err, data, response){
-    //     userData = data;
-    //     listData.user_info = userData;
-    //     var dataWithMetrics = new Metrics(listData);
-        
-    //     tweetDB.find().lean().exec( function(err, data) {
-    //       if(err)
-    //         console.log('err accessing tweetdb');
+      T.get('users/show', {screen_name: userName}, function(err, data, response){
+        userData = data;
+        listData.user_info = userData;
+        var dataWithMetrics = new Metrics(listData);
+
+        tweetDB.find().lean().exec( function(err, data) {
+          if(err)
+            console.log('err accessing tweetdb');
           
-    //       var timelineData = data;
-          
-    //       res.locals = {
-    //         timeline: timelineData,
-    //         users: dataWithMetrics.users
-    //       };
-    //       res.render('index', {
-    //         title: '@' + userName + '/' + listName,
-    //         partials: {}
-    //       });
-    //     });
-    //   })
-    // });
+            var timelineData = data;
+            mentions(res, timelineData, dataWithMetrics, userName, listName, renderPage);
+
+        });
+      })
+    });
   });
 
 
   app.get('/update', function(req, res){
 
-    var userName = 'funnelist338';
-    var listName = 'Golf';
+    var userName = 'ninatypewriter';
+    var listName = 'Microsoft';
 
-    T.get('lists/statuses', {slug: listName, owner_screen_name: userName, include_rts: true, count: 100}, function(err, data, response){
+    T.get('lists/statuses', {slug: listName, owner_screen_name: userName, count: 100, max_id: 533224471302139900}, function(err, data, response){
       if(err){
         console.log("ERR IS HERE: "+err);
       }
@@ -176,7 +117,7 @@ module.exports = function(app) {
         
         tweet.save(function(err){
         if(err)
-            console.log ("TWEET POSTING ERROR");
+            console.log ("TWEET POSTING ERROR: "+err);
         });
       }
 

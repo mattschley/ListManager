@@ -46,7 +46,12 @@
         </div>
         <div class="col-md-2">
           <h2>Suggestions</h2>
-          <p>Coming soon!</p>
+          <h4>Users mentioned by others </h4>
+           <ul class="mentions-list">
+              {{# mentions }}
+                <li><strong>{{ username }}:</strong> {{ count }}</li>
+              {{/ mentions }}
+          </ul>
         </div>
       </div>
     </div>

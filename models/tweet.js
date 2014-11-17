@@ -7,7 +7,11 @@ var TweetSchema = new Schema({
   username: String,
   isretweetof: String,
   tweet: String, 
-  tweetid: Number,
+  tweetid: {
+    type: Number,
+    unique: true, 
+    index: true
+  },
   tweeted_at: Date, 
   urls: Array, 
   mentions: Array, 
