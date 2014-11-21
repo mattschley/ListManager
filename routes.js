@@ -67,7 +67,6 @@ module.exports = function(app) {
     });
   });
 
-
   app.post('/', function(req, res){
     var userName = req.body.user;
     var listName = req.body.list;
