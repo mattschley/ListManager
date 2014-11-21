@@ -195,6 +195,14 @@ module.exports = function(app) {
 
           return Mentions(results.fetchMongoTimeline, cb);
         }
+      ],
+
+      getDictionary: [
+        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
+          console.log("RUNNING getMentions");
+
+          return Dictionary(results.getUserInfo, results.fetchMongoTimeline, cb);
+        }
       ]
 
     }

@@ -1,6 +1,6 @@
 var tweetDB = require('./models/tweet.js');
 var fs = require('fs');
-module.exports = function(listData, timelineData){
+module.exports = function(listData, timelineData, cb){
 
 var tweet_data = timelineData; 
 var username = tweet_data[1].username;
@@ -24,7 +24,8 @@ for(i=0; i < length; i++){
     	}
     }
 
-  } 
+  }
+  cb(null);
 
 }
 //console.log(tweet_data);
