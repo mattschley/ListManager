@@ -13,7 +13,8 @@
     "morgan": "*",
     "body-parser": "*",
     "hogan-express": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "async": "*"
   },
   "author": "David Ryan",
   "license": "ISC",

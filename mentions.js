@@ -1,5 +1,5 @@
 var tweetDB = require('./models/tweet.js');
-module.exports = function(res, timelineData, dataWithMetrics, userName, listName, callback){
+module.exports = function(timelineData, callback){
 
 	var tweet_data = timelineData;	 
 	var length = tweet_data.length; 
@@ -26,5 +26,6 @@ module.exports = function(res, timelineData, dataWithMetrics, userName, listName
 	sortedMentions.sort(function(a, b) {return b.count - a.count})
 	// console.log("Mentions:");
 	// console.log(sortedMentions);
-	callback(res, timelineData, dataWithMetrics, sortedMentions, userName, listName);
+
+	callback(null, sortedMentions);
 }
