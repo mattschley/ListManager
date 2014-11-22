@@ -5,7 +5,7 @@ module.exports = function(dictionaryWords,listData, timelineData, cb){
 
 var array = CSVToArray(dictionaryWords,",");
 
-console.log(array);
+console.log(array[0][0]);
 var tweet_data = timelineData; 
 var username = tweet_data[1].username;
 var tweet_content = tweet_data[1].tweet.toString(); 
@@ -15,7 +15,7 @@ var screen_name = listData.users[10].screen_name;
 var length = tweet_data.length; 
 for(i=0; i < length; i++){
   var test = tweet_data[i].tweet.toString(); 
-  if(test.indexOf('golf') > -1 ||test.indexOf('pga') > -1 ||test.indexOf('swing') > -1|| test.indexOf('course') > -1){
+  if(test.indexOf((array[0][0]).toString()) > -1 ||test.indexOf((array[0][1]).toString()) > -1 ||test.indexOf((array[0][2]).toString()) > -1|| test.indexOf((array[0][3]).toString()) > -1|| test.indexOf((array[0][4]).toString()) > -1){
     var relevant_tweet = tweet_data[i];
     var relevant_user_id = relevant_tweet.username;
     for(j=0; j < listData.users.length; j++){
