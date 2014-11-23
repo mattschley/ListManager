@@ -30,9 +30,10 @@
         </div>
         <div class="col-xs-4">
           <h2>Users</h2>
+          <div class="btn sort-dict-button">Sort dictionary</div>
           <ul class="user-list">
             {{# users }}
-              <li>
+              <li data-dicthits = "{{ metrics.dictionaryHits }}">
                 <h3>@{{ screen_name }}</h3>
                 <h4>Metrics:</h4>
                 <p>FF ratio: {{ metrics.ff_ratio }}</p>
@@ -93,6 +94,14 @@
         });
       });
       {{/ canwrite }}
+
+      $(".sort-dict-button").click(function() {
+        $(".user-list li").sort(sort_li).appendTo('.user-list');
+        function sort_li(a, b){
+            return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
+        }
+      });
+
     </script>
   </body>
 </html>
