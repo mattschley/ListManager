@@ -9,10 +9,10 @@ var Mentions = require('./mentions.js');
 
 //https://github.com/ttezel/twit
 
-var CONSUMERKEY =  'tDz1k6Vf4G9ZTfKC1oLBh6m4N';
-var CONSUMERSECRET = 'c0qfELVCgiHmJr4Uf1eCclLoGknTDFdh4drAhv1zd90IGlQhWc';
-var ACCESSTOKEN =  '180828652-NGg0NjgZLw0i3u7qS7OUlDREewv1D8dDcjyqOCEg';
-var ACCESSTOKENSECRET = 'AaMVy2p1ebA8NPgFOnLJWRKSri0tmJvZuBfJxqZN1B1qq';
+var CONSUMERKEY =  'GryVkSV5M6j1a9BK2KU2tJ7QP';
+var CONSUMERSECRET = 'sOhrQiTvKkLjR9mkKU5sUD2x3hP4TT7vsUKMZJ6uMyqTpKtFbm';
+var ACCESSTOKEN =  '2857431705-ZNX4nNcx6laZJozJpVYhjXvQmJawBXm3VV2xlLO';
+var ACCESSTOKENSECRET = 'ibnHThzj1SZo0Zhl0gRn3v6Ny3cL0wVCenJlHvcKXzoTC';
 
 var T = new Twit({
     consumer_key:            CONSUMERKEY, 
@@ -56,6 +56,19 @@ module.exports = function(app) {
   app.get('/api_status', function(req, res){
     T.get('application/rate_limit_status', function(err, data, response){
       res.send(data);
+    });
+  });
+
+  app.get('/adduser', function(req, res){
+    T.post('lists/members/create', {slug: "Golf", owner_screen_name: "funnelist338", screen_name: "nytgraphics"}, function(err, data, response){
+      if(err){
+        console.log("ERROR: "+err);
+     //   console.log(response);
+      }
+      else{
+        console.log("IT WORKED!");
+    //    res.send(data);
+      }
     });
   });
 
