@@ -56,6 +56,11 @@
         </div>
       </div>
     </div>
+    <script>
+    $('li').sortElements(function(a, b){
+    return $(a).text() > $(b).text() ? 1 : -1;
+    });
+    </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
