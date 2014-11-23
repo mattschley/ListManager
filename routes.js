@@ -239,15 +239,15 @@ module.exports = function(app) {
 
           return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
         }
+      ],
+
+      getDictionary: [
+        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
+          console.log("RUNNING getDictionary");
+          
+          return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
+        }
       ]
-
-      // getDictionary: [
-      //   "fetchMongoTimeline", "getUserInfo", function(cb, results) {
-      //     console.log("RUNNING getDictionary");
-
-      //     return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
-      //   }
-      // ]
 
     }
 
