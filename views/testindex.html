@@ -38,6 +38,7 @@
                 <p>FF ratio: {{ metrics.ff_ratio }}</p>
                 <p>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</p>
                 <p>Dictionary Hits: {{metrics.dictionaryHits}}</p>
+                <p></p>
               </li>
             {{/ users }}
           </ul>
@@ -47,12 +48,7 @@
         </div>
         <div class="col-md-2">
           <h2>Suggestions</h2>
-          <h4>Users mentioned by others </h4>
-           <ul class="mentions-list">
-              {{# mentions }}
-                <li><strong>{{ username }}:</strong> {{ count }}</li>
-              {{/ mentions }}
-          </ul>
+          <p>Coming soon!</p>
         </div>
       </div>
     </div>

@@ -70,6 +70,7 @@ module.exports = function(app) {
   app.post('/', function(req, res){
     var userName = req.body.user;
     var listName = req.body.list;
+    var dictionaryWords = req.body.words;
 
     var listData;
     var userData;
@@ -194,6 +195,14 @@ module.exports = function(app) {
           console.log("RUNNING getMentions");
 
           return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
+        }
+      ],
+
+      getDictionary: [
+        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
+          console.log("RUNNING getMentions");
+
+          return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
 
