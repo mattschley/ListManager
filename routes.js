@@ -244,7 +244,7 @@ module.exports = function(app) {
       getDictionary: [
         "fetchMongoTimeline", "getUserInfo", function(cb, results) {
           console.log("RUNNING getDictionary");
-          
+
           return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
@@ -269,7 +269,7 @@ module.exports = function(app) {
           mentions: results.getMentions.slice(0, 20),
           ownername: userName,
           listname: listName,
-          writeable: canWrite
+          canwrite: canWrite
         };
           res.render('index', {
           title: '@' + userName + '/' + listName,
