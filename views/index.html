@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Funnelist</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="index.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/index.css" rel="stylesheet">
   </head>
   <body>
     <div class="container" style="width:1170px">
@@ -38,6 +38,7 @@
                 <p>FF ratio: {{ metrics.ff_ratio }}</p>
                 <p>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</p>
                 <p>Dictionary Hits: {{metrics.dictionaryHits}}</p>
+                {{# canwrite }}<p><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></p>{{/ canwrite }}
               </li>
             {{/ users }}
           </ul>
@@ -52,9 +53,9 @@
               {{# mentions }}
                 <li>
                   <p><strong>{{ username }}:</strong> {{ count }}</p>
-                  <p><a href="https://twitter.com/{{ username }}">Go to profile</a></p> 
+                  <p><a target="_blank" href="https://twitter.com/{{ username }}">Go to profile</a></p> 
+                 {{# canwrite }} <p><a class="add-button" data-user="{{ username }}">Add user</a></p>{{/ canwrite }}
                 </li>
-
               {{/ mentions }}
           </ul>
         </div>
@@ -63,6 +64,35 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+      {{# canwrite }}
+      $('.add-button').click(function() {  
+        var username = $(this).attr('data-user');
+        $.post( "/adduser", 
+          {
+            list: "{{ listname }}",
+            owner: "{{ ownername }}",
+            user: username
+          },
+          function( data ) {
+            alert( "User was added to the list" );
+        });
+      });
+
+      $('.delete-button').click(function() {  
+        var username = $(this).attr('data-user');
+        $.post( "/removeuser", 
+          {
+            list: "{{ listname }}",
+            owner: "{{ ownername }}",
+            user: username
+          },
+          function( data ) {
+            alert( "User was deleted from the list" );
+        });
+      });
+      {{/ canwrite }}
+    </script>
   </body>
 </html>

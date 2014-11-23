@@ -59,19 +59,39 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/adduser', function(req, res){
-    T.post('lists/members/create', {slug: "Golf", owner_screen_name: "funnelist338", screen_name: "nytgraphics"}, function(err, data, response){
+  app.post('/adduser', function(req, res){
+    var listName = req.body.list;
+    var ownerName = req.body.owner;
+    var userName = req.body.user;
+
+    T.post('lists/members/create', {slug: listName, owner_screen_name: ownerName, screen_name: userName}, function(err, data, response){
       if(err){
         console.log("ERROR: "+err);
      //   console.log(response);
       }
       else{
         console.log("IT WORKED!");
-    //    res.send(data);
+        res.send(data)
       }
     });
   });
 
+  app.post('/removeuser', function(req, res){
+    var listName = req.body.list;
+    var ownerName = req.body.owner;
+    var userName = req.body.user;
+
+    T.post('lists/members/destroy', {slug: listName, owner_screen_name: ownerName, screen_name: userName}, function(err, data, response){
+      if(err){
+        console.log("ERROR: "+err);
+     //   console.log(response);
+      }
+      else{
+        console.log("IT WORKED!");
+        res.send(data)
+      }
+    });
+  });
 
   app.get('/', function(req, res) {
     res.render('home', {
@@ -84,6 +104,16 @@ module.exports = function(app) {
     var userName = req.body.user;
     var listName = req.body.list;
     var dictionaryWords = req.body.words;
+    dictionaryWords = dictionaryWords.replace(/\s+/g, '');
+
+    res.redirect('/'+userName+'/'+listName+"?words="+dictionaryWords);
+  })
+
+  app.get('/:user/:list', function(req, res){
+    var userName = req.params.user;
+    var listName = req.params.list;
+
+    var dictionaryWords = req.query.words;
 
     var listData;
     var userData;
@@ -213,7 +243,7 @@ module.exports = function(app) {
 
       getDictionary: [
         "fetchMongoTimeline", "getUserInfo", function(cb, results) {
-          console.log("RUNNING getMentions");
+          console.log("RUNNING getDictionary");
 
           return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
         }
@@ -227,10 +257,19 @@ module.exports = function(app) {
       }
       else{
         console.log("RESULTS\n\n");
+
+        var canWrite = false;
+        if(userName == "funnelist338"){
+          canWrite = true;
+        }
+
         res.locals = {
           timeline: results.fetchMongoTimeline,
           users: results.getUserInfo.users,
-          mentions: results.getMentions.slice(0, 20)
+          mentions: results.getMentions.slice(0, 20),
+          ownername: userName,
+          listname: listName,
+          canwrite: canWrite
         };
           res.render('index', {
           title: '@' + userName + '/' + listName,
