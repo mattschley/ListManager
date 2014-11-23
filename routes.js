@@ -83,6 +83,7 @@ module.exports = function(app) {
   app.post('/', function(req, res){
     var userName = req.body.user;
     var listName = req.body.list;
+    var dictionaryWords = req.body.words;
 
     var listData;
     var userData;
@@ -203,10 +204,18 @@ module.exports = function(app) {
       ],
 
       getMentions: [
-        "fetchMongoTimeline", function(cb, results) {
+        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
           console.log("RUNNING getMentions");
 
-          return Mentions(results.fetchMongoTimeline, cb);
+          return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
+        }
+      ],
+
+      getDictionary: [
+        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
+          console.log("RUNNING getMentions");
+
+          return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
 
