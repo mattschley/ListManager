@@ -26,7 +26,7 @@ var d = new Date();
   var minutes = seconds/60;
   var hours = minutes/60;
   var days = hours/24;
-  var frequency = statuses_count/days;
+  var frequency = (statuses_count/days).toFixed(1);
   var dictionaryHits = 0;
   // add metric data to metrics attribute in JSON object
 

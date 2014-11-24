@@ -16,9 +16,9 @@ module.exports = function(dictionaryWords,listData, timelineData, cb){
 
     var length = tweet_data.length; 
     for(i=0; i < length; i++){
-        var test = tweet_data[i].tweet.toString(); 
+        var test = tweet_data[i].tweet.toString().toLowerCase(); 
         
-        if(test.indexOf(array[0]) > -1 ||test.indexOf(array[1]) > -1 ||test.indexOf(array[2]) > -1|| test.indexOf(array[3]) > -1|| test.indexOf(array[4]) > -1){
+        if(test.indexOf(array[0].toLowerCase()) > -1 ||test.indexOf(array[1].toLowerCase()) > -1 ||test.indexOf(array[2].toLowerCase()) > -1|| test.indexOf(array[3].toLowerCase()) > -1|| test.indexOf(array[4].toLowerCase()) > -1){
             var relevant_tweet = tweet_data[i];
             var relevant_user_id = relevant_tweet.username;
             for(j=0; j < listData.users.length; j++){

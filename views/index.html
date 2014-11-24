@@ -29,15 +29,16 @@
           {{/ timeline }}
         </div>
         <div class="col-xs-4">
-          <h2>Users</h2>
+          <h2 style="display:inline-block;">Users</h2>
           <div class="btn sort-dict-button">Sort dictionary</div>
-          <ul class="user-list">
+          <ul class="user-list" style="margin-top:10px;">
             {{# users }}
               <li data-dicthits = "{{ metrics.dictionaryHits }}">
                 <h3>@{{ screen_name }}</h3>
                 <h4>Metrics:</h4>
                 <p>FF ratio: {{ metrics.ff_ratio }}</p>
                 <p>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</p>
+                <p>Frequency: {{ metrics.frequency }}
                 <p>Dictionary Hits: {{metrics.dictionaryHits}}</p>
                 {{# canwrite }}<p><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></p>{{/ canwrite }}
               </li>
