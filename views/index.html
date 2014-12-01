@@ -30,10 +30,20 @@
         </div>
         <div class="col-xs-4">
           <h2 style="display:inline-block;">Users</h2>
-          <div class="btn sort-dict-button">Sort dictionary</div>
+
+          <div style="display:inline-block;">Sort 
+            <select id="sorting-dropdown">
+              <option>Dictionary Hits</option>
+              <option>FF Ratio</option>
+              <option>Frequency</option>
+            </select> : &nbsp;  
+            <span class="btn sort-up-button">up </span> 
+            <span class="btn sort-down-button">down</span>
+          </div>
+
           <ul class="user-list" style="margin-top:10px;">
             {{# users }}
-              <li data-dicthits = "{{ metrics.dictionaryHits }}">
+              <li data-dicthits = "{{ metrics.dictionaryHits }}" data-ffratio="{{ metrics.ff_ratio }}" data-freq="{{ metrics.frequency }}">
                 <h3>@{{ screen_name }}</h3>
                 <ul class="metrics-list">
                   <li>FF ratio: {{ metrics.ff_ratio }}</li>
@@ -91,7 +101,6 @@
       });
 
       $('.mentions-button').click(function() {  
-        console.log("CLOCKEd");
         var tweetidString = $(this).attr('data-ids');        
         var timelineArray = $(".timeline li");
 
@@ -101,10 +110,6 @@
         }
 
         var tweetids = tweetidString.split(',');
-
-        console.log(tweetids);
-        console.log(tweetids.length);
-        console.log(tweetids[0]);
 
         timelineArray.each(function(){
             var id = $(this).find('p').attr('data-id');
@@ -144,10 +149,51 @@
       });
       {{/ canwrite }}
 
-      $(".sort-dict-button").click(function() {
+      // $(".sort-dict-up-button").click(function() {
+      //   $(".user-list > li").sort(sort_li).appendTo('.user-list');
+      //   function sort_li(a, b){
+      //       return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
+      //   }
+      // });
+      // $(".sort-dict-down-button").click(function() {
+      //   $(".user-list > li").sort(sort_li).appendTo('.user-list');
+      //   function sort_li(a, b){
+      //       return ($(b).data('dicthits')) <= ($(a).data('dicthits')) ? 1 : -1;    
+      //   }
+      // });
+      
+      function getSortingVal(sortVal){
+        if(sortVal == "Dictionary Hits"){
+          return 'dicthits';
+        }
+        if(sortVal == "Frequency"){
+          return 'freq';
+        }
+        if(sortVal == "FF Ratio"){
+          return 'ffratio';
+        }
+        console.log("DIDNT GET RIGHT SORTING VAL")
+      }
+      
+
+      $(".sort-up-button").click(function() {
+        var sortVal = $("#sorting-dropdown option:selected").text();
+        
+        sortVal = getSortingVal(sortVal);
+
+
         $(".user-list > li").sort(sort_li).appendTo('.user-list');
         function sort_li(a, b){
-            return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
+            return ($(b).data(sortVal)) > ($(a).data(sortVal)) ? 1 : -1;    
+        }
+      });
+      $(".sort-down-button").click(function() {
+        var sortVal = $("#sorting-dropdown option:selected").text();
+        sortVal = getSortingVal(sortVal);
+
+        $(".user-list > li").sort(sort_li).appendTo('.user-list');
+        function sort_li(a, b){
+            return ($(b).data(sortVal)) <= ($(a).data(sortVal)) ? 1 : -1;    
         }
       });
 

@@ -108,3 +108,7 @@
 .mentions-more-info p, .mentions-more-info a{
   margin-bottom: 5px;
 }
+
+.sort-up-button, .sort-down-button{
+  padding: 0;
+}
