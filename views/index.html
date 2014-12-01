@@ -30,20 +30,22 @@
         </div>
         <div class="col-xs-4">
           <h2 style="display:inline-block;">Users</h2>
-
-          <div style="display:inline-block;">Sort 
-            <select id="sorting-dropdown">
-              <option>Dictionary Hits</option>
-              <option>FF Ratio</option>
-              <option>Frequency</option>
-            </select> : &nbsp;  
-            <span class="btn sort-up-button">up </span> 
-            <span class="btn sort-down-button">down</span>
+          <div style="margin-left:10px">
+            <div style="margin-bottom: 10px;">Sort 
+              <select id="sorting-dropdown">
+                <option>Dictionary Hits</option>
+                <option>FF Ratio</option>
+                <option>Frequency</option>
+              </select> : &nbsp;  
+              <span class="btn sort-up-button">up </span> 
+              <span class="btn sort-down-button">down</span>
+            </div>
+            <div>Show: <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified</div>
           </div>
 
           <ul class="user-list" style="margin-top:10px;">
             {{# users }}
-              <li data-dicthits = "{{ metrics.dictionaryHits }}" data-ffratio="{{ metrics.ff_ratio }}" data-freq="{{ metrics.frequency }}">
+              <li data-dicthits = "{{ metrics.dictionaryHits }}" data-ffratio="{{ metrics.ff_ratio }}" data-freq="{{ metrics.frequency }}" data-verified="{{ metrics.verified }}">
                 <h3>@{{ screen_name }}</h3>
                 <ul class="metrics-list">
                   <li>FF ratio: {{ metrics.ff_ratio }}</li>
@@ -149,18 +151,7 @@
       });
       {{/ canwrite }}
 
-      // $(".sort-dict-up-button").click(function() {
-      //   $(".user-list > li").sort(sort_li).appendTo('.user-list');
-      //   function sort_li(a, b){
-      //       return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
-      //   }
-      // });
-      // $(".sort-dict-down-button").click(function() {
-      //   $(".user-list > li").sort(sort_li).appendTo('.user-list');
-      //   function sort_li(a, b){
-      //       return ($(b).data('dicthits')) <= ($(a).data('dicthits')) ? 1 : -1;    
-      //   }
-      // });
+      
       
       function getSortingVal(sortVal){
         if(sortVal == "Dictionary Hits"){
@@ -195,6 +186,36 @@
         function sort_li(a, b){
             return ($(b).data(sortVal)) <= ($(a).data(sortVal)) ? 1 : -1;    
         }
+      });
+
+      $("input[name='verified']").click(function(){
+        var userArray = $('.user-list > li');
+        userArray.each(function(){
+          if($(this).attr('data-verified') == "true") {
+            if($("input[name='verified']").is(':checked')){
+               $(this).show();
+            }
+            else{
+               $(this).hide();
+            }
+          }
+
+        })
+      });
+
+      $("input[name='notverified']").click(function(){
+        var userArray = $('.user-list > li');
+        userArray.each(function(){
+          if($(this).attr('data-verified') == "false") {
+            if($("input[name='notverified']").is(':checked')) {
+               $(this).show();
+            }
+            else {
+               $(this).hide();
+            }
+          }
+
+        })
       });
 
     </script>
