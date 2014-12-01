@@ -5,29 +5,23 @@ module.exports = function(dictionaryWords,listData, timelineData, cb){
 
     var array = CSVToArray(dictionaryWords,",")[0];
     console.log(array);
-
-    console.log(array[0]);
     var tweet_data = timelineData; 
-    // var username = tweet_data[1].username;
-    // var tweet_content = tweet_data[1].tweet.toString(); 
-    // console.log(username);
-    // console.log(tweet_content);
-    // var screen_name = listData.users[10].screen_name;
 
     var length = tweet_data.length; 
     for(i=0; i < length; i++){
+
         var test = tweet_data[i].tweet.toString().toLowerCase(); 
-        
-        if(test.indexOf(array[0].toLowerCase()) > -1 ||test.indexOf(array[1].toLowerCase()) > -1 ||test.indexOf(array[2].toLowerCase()) > -1|| test.indexOf(array[3].toLowerCase()) > -1|| test.indexOf(array[4].toLowerCase()) > -1){
-            var relevant_tweet = tweet_data[i];
-            var relevant_user_id = relevant_tweet.username;
-            for(j=0; j < listData.users.length; j++){
-                if(listData.users[j].screen_name == relevant_user_id){
-                    var count = listData.users[j].metrics.dictionaryHits; 
-                    //console.log(count); 
-                    var count = count + 1;  
-                    //console.log("count is:"+count+ "for user:"+listData.users[j].screen_name+"and relev:"+relevant_user_id);
-                    listData.users[j].metrics.dictionaryHits = count; 
+
+        for (var j = 0; j < array.length; j++){
+            if(test.indexOf(array[j].toLowerCase() > 0)){
+                var relevant_tweet = tweet_data[i];
+                var relevant_user_id = relevant_tweet.username;
+                for(j=0; j < listData.users.length; j++){
+                    if(listData.users[j].screen_name == relevant_user_id){
+                        var count = listData.users[j].metrics.dictionaryHits; 
+                        var count = count + 1;  
+                        listData.users[j].metrics.dictionaryHits = count; 
+                    }
                 }
             }
         }

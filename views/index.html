@@ -15,12 +15,12 @@
       <h1 style="text-align:center;">{{ title }}</h1>
       <div class="row">
         <div class="col-xs-5">
-          <h2>Recent Timeline</h2>
+          <h2>Recent Timeline &nbsp;&nbsp; <span class="mentions-button" style="font-size:14px;font-weight:normal;">Restore Timeline</span></h2>
           <ul class="timeline">
             {{# timeline }}
               <li>
                 <h3>@{{ username }}</h3>
-                <p>{{ tweet }}</p>
+                <p data-id="{{ tweetid }}">{{ tweet }}</p>
               </li>
             {{/ timeline }}
           </ul>
@@ -35,12 +35,14 @@
             {{# users }}
               <li data-dicthits = "{{ metrics.dictionaryHits }}">
                 <h3>@{{ screen_name }}</h3>
-                <h4>Metrics:</h4>
-                <p>FF ratio: {{ metrics.ff_ratio }}</p>
-                <p>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</p>
-                <p>Frequency: {{ metrics.frequency }}
-                <p>Dictionary Hits: {{metrics.dictionaryHits}}</p>
-                {{# canwrite }}<p><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></p>{{/ canwrite }}
+                <ul class="metrics-list">
+                  <li>FF ratio: {{ metrics.ff_ratio }}</li>
+                  <li>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</li>
+                  <li>Frequency: {{ metrics.frequency }}</li>
+                  <li>Dictionary Hits: {{metrics.dictionaryHits}}</li>
+                  {{# canwrite }}<li><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></li>
+                  {{/ canwrite }}
+                </ul>
               </li>
             {{/ users }}
           </ul>
@@ -50,15 +52,19 @@
         </div>
         <div class="col-xs-3">
           <h2>Suggestions</h2>
-          <h4>Users mentioned by others </h4>
            <ul class="mentions-list">
               {{# mentions }}
                 <li>
-                  <!-- <p><strong>{{ username }}:</strong> {{ count }}</p>
-                  <p><a target="_blank" href="https://twitter.com/{{ username }}">Go to profile</a></p>  -->
-                  <p><strong><a target="_blank" href="https://twitter.com/{{ username }}">{{ username }}:</a><strong> {{ count }}</p> 
-
-                 {{# canwrite }} <p><a class="add-button" data-user="{{ username }}">Add user</a></p>{{/ canwrite }}
+                  <p>
+                    <strong>{{ username }}: </strong>   
+                    {{# canwrite }} 
+                    <a class="add-button" data-user="{{ username }}" style="font-size: 12px">Add user</a>
+                   {{/ canwrite }}
+                  </p>   
+                  <div class="mentions-more-info">
+                    <p>Mentioned {{ count }} times. <span style="color: #2a6496" class="mentions-button" data-ids="{{ mentionedTweets }}">See tweets</span></p>
+                    <p><a target="_blank" href="https://twitter.com/{{ username }}">View profile</a></p>
+                  </div>
                 </li>
               {{/ mentions }}
           </ul>
@@ -84,6 +90,46 @@
         });
       });
 
+      $('.mentions-button').click(function() {  
+        console.log("CLOCKEd");
+        var tweetidString = $(this).attr('data-ids');        
+        var timelineArray = $(".timeline li");
+
+        if(tweetidString == undefined){
+          timelineArray.show();
+          return;
+        }
+
+        var tweetids = tweetidString.split(',');
+
+        console.log(tweetids);
+        console.log(tweetids.length);
+        console.log(tweetids[0]);
+
+        timelineArray.each(function(){
+            var id = $(this).find('p').attr('data-id');
+
+            if(id == undefined){
+              console.log ("UNDEFINED?");
+            }
+
+            var hasMatch = false;
+
+            for (var i = 0; i < tweetids.length; i++){
+              if(id == tweetids[i]){
+                $(this).show();
+                console.log("equal: "+tweetids[i]);
+                hasMatch = true;
+              }
+            }
+            if (!hasMatch){
+              $(this).hide();
+              console.log(tweetids[i] + "!= " + id);
+            }
+        })
+
+      });
+
       $('.delete-button').click(function() {  
         var username = $(this).attr('data-user');
         $.post( "/removeuser", 
@@ -99,7 +145,7 @@
       {{/ canwrite }}
 
       $(".sort-dict-button").click(function() {
-        $(".user-list li").sort(sort_li).appendTo('.user-list');
+        $(".user-list > li").sort(sort_li).appendTo('.user-list');
         function sort_li(a, b){
             return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
         }

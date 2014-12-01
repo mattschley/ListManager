@@ -12,7 +12,7 @@
 .timeline{
   padding: 0;
   list-style: none;
-  max-height:1400px;
+  max-height:1570px;
   overflow: scroll;
 }
 
@@ -41,7 +41,7 @@
 }
 
 
-.user-list li {
+.user-list > li {
   border-bottom: 1px solid #DDDDDD;
   margin-bottom: 15px;
   padding-bottom: 15px;
@@ -53,7 +53,7 @@
   border-radius: 5px;
   padding: 10px; 
   box-shadow: 0 0 5px #888888; 
-   max-height:1400px;
+   max-height:1570px;
   overflow: scroll;
 }
 
@@ -61,19 +61,12 @@
   margin: 0 auto;
 }
 
-.user-list p{
-  font-size:12px;
-  line-height: 1.2;
-  color: #888888;
-  margin: 0 0 0 10px;
-}
-
 .user-list h4{
   margin: 5px 0px 5px 5px;
 }
 
 .user-list h3{
-  margin: 0;
+  margin: 0 0 10px 0;
 }
 
 .mentions-list{
@@ -81,3 +74,37 @@
   padding-left: 5px;
 }
 
+.mentions-list > li > p{
+  margin:0 0 5px 0;
+
+}
+
+.mentions-list li{
+  margin-bottom: 20px;
+}
+
+
+.metrics-list{
+  list-style: none;
+  padding: 0;
+}
+
+.metrics-list > li{
+  display: inline-block;
+  font-size:12px;
+  line-height: 1.2;
+  color: #888888;
+  margin: 0 0 0 10px;
+  width: 40%;
+}
+
+.mentions-more-info{
+ font-size:12px;
+  line-height: 1.2;
+  color: #888888;
+  margin: 0 0 0 10px;
+}
+
+.mentions-more-info p, .mentions-more-info a{
+  margin-bottom: 5px;
+}

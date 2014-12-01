@@ -16,7 +16,7 @@ module.exports = function(listData, timelineData, callback){
 	  var jsonMentions = tweet_data[j].mentions;
 
 	  if (jsonMentions.length > 0){
-	  	var mentionedTweet = tweet_data[j].tweet;
+	  	var mentionedTweet = tweet_data[j].tweetid;
 	  	var tweetUser = tweet_data[j].username;
 	  }
 	
@@ -46,12 +46,12 @@ module.exports = function(listData, timelineData, callback){
 
 	var sortedMentions = [];
 	for (var name in mentionedUsers){
-		sortedMentions.push({'username': name, 'count': mentionedUsers[name], 'tweet user': tweetUsers[name], 
-		'mentioned tweets': mentionedTweets[name]})
+		sortedMentions.push({'username': name, 'count': mentionedUsers[name], 'tweetUser': tweetUsers[name], 
+		'mentionedTweets': mentionedTweets[name]})
 	}
 		
 	sortedMentions.sort(function(a, b) {return b.count - a.count})
-	console.log(sortedMentions);
+	//console.log(sortedMentions);
 
 
 	callback(null, sortedMentions);

@@ -71,7 +71,7 @@ module.exports = function(app) {
       }
       else{
         console.log("IT WORKED!");
-        res.send(data)
+        res.send(data);
       }
     });
   });
@@ -88,7 +88,13 @@ module.exports = function(app) {
       }
       else{
         console.log("IT WORKED!");
-        res.send(data)
+        var oldUserData = data;
+        tweetDB.find({listusername: ownerName, listname: listName, username: userName}).remove().exec(function(err, data){
+          if(err){
+            console.log('ERROR: '+err);
+          }
+          res.send(data);
+        });  
       }
     });
   });
@@ -244,7 +250,7 @@ module.exports = function(app) {
       getDictionary: [
         "fetchMongoTimeline", "getUserInfo", function(cb, results) {
           console.log("RUNNING getDictionary");
-
+          console.log("dictionaryWords are: "+dictionaryWords);
           return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
