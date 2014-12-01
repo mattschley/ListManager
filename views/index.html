@@ -54,8 +54,10 @@
            <ul class="mentions-list">
               {{# mentions }}
                 <li>
-                  <p><strong>{{ username }}:</strong> {{ count }}</p>
-                  <p><a target="_blank" href="https://twitter.com/{{ username }}">Go to profile</a></p> 
+                  <!-- <p><strong>{{ username }}:</strong> {{ count }}</p>
+                  <p><a target="_blank" href="https://twitter.com/{{ username }}">Go to profile</a></p>  -->
+                  <p><strong><a target="_blank" href="https://twitter.com/{{ username }}">{{ username }}:</a><strong> {{ count }}</p> 
+
                  {{# canwrite }} <p><a class="add-button" data-user="{{ username }}">Add user</a></p>{{/ canwrite }}
                 </li>
               {{/ mentions }}

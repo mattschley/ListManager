@@ -6,6 +6,7 @@ module.exports = function(listData, timelineData, callback){
 	var nameCount = 0; 
 	var listUsers = [];
 	var mentionedTweets = [];
+	var tweetUsers = [];
 	
 	for (i=0; i < listData.users.length; i++){
 		listUsers.push(listData.users[i].screen_name);
@@ -16,6 +17,7 @@ module.exports = function(listData, timelineData, callback){
 
 	  if (jsonMentions.length > 0){
 	  	var mentionedTweet = tweet_data[j].tweet;
+	  	var tweetUser = tweet_data[j].username;
 	  }
 	
 	  for(k=0; k < jsonMentions.length; k++){
@@ -31,10 +33,12 @@ module.exports = function(listData, timelineData, callback){
 	  		}
 
 	  		if (x in mentionedTweets){
+	  			tweetUsers[x].push(tweetUser);
 	  			mentionedTweets[x].push(mentionedTweet);
 	  		}
 	  		else {
 	  			mentionedTweets[x] = [mentionedTweet];
+	  			tweetUsers[x] = [tweetUser];
 	  		}
 	  	}	
 	  }
@@ -42,7 +46,8 @@ module.exports = function(listData, timelineData, callback){
 
 	var sortedMentions = [];
 	for (var name in mentionedUsers){
-		sortedMentions.push({'username': name, 'count': mentionedUsers[name], 'mentioned tweets': mentionedTweets[name]})
+		sortedMentions.push({'username': name, 'count': mentionedUsers[name], 'tweet user': tweetUsers[name], 
+		'mentioned tweets': mentionedTweets[name]})
 	}
 		
 	sortedMentions.sort(function(a, b) {return b.count - a.count})
