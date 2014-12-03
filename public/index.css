@@ -1,8 +1,9 @@
 .super-header{
   font-size: 72px;
   text-align: center;
-  margin-top:35px;
+  padding-top:35px;
   margin-bottom:20px;
+  margin-top:0;
 }
 
 .row h2{

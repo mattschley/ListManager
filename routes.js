@@ -275,6 +275,7 @@ module.exports = function(app) {
           mentions: results.getMentions.slice(0, 20),
           ownername: userName,
           listname: listName,
+          dictwords: dictionaryWords,
           canwrite: canWrite
         };
           res.render('index', {

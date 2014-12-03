@@ -9,25 +9,12 @@
     <link href="/index.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container" style="width:1170px">
+    <div style="background-color: rgb(18, 138, 213); color: white;text-align:center;padding-bottom:25px;margin-bottom:15px;">
       <h1 class="super-header">Funnelist</h1>
-
-      <h1 style="text-align:center;">{{ title }}</h1>
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="container"  style="width:1170px;margin:0 auto">
       <div class="row">
-        <div class="col-xs-5">
-          <h2>Recent Timeline &nbsp;&nbsp; <span class="mentions-button" style="font-size:14px;font-weight:normal;">Restore Timeline</span></h2>
-          <ul class="timeline">
-            {{# timeline }}
-              <li>
-                <h3>@{{ username }}</h3>
-                <p data-id="{{ tweetid }}">{{ tweet }}</p>
-              </li>
-            {{/ timeline }}
-          </ul>
-          {{^ timeline }}
-            <p>The timeline can't be retreived at this time...</p>
-          {{/ timeline }}
-        </div>
         <div class="col-xs-4">
           <h2 style="display:inline-block;">Users</h2>
           <div style="margin-left:10px;display:inline-block;">
@@ -46,7 +33,7 @@
           <ul class="user-list" style="margin-top:10px;">
             {{# users }}
               <li data-dicthits = "{{ metrics.dictionaryHits }}" data-ffratio="{{ metrics.ff_ratio }}" data-freq="{{ metrics.frequency }}" data-verified="{{ metrics.verified }}">
-                <h3>@{{ screen_name }}</h3>
+                <h3><a style="color:rgb(51, 51, 51); " href="https://twitter.com/{{ screen_name }}">@{{ screen_name }}</a></h3>
                 <ul class="metrics-list">
                   <li>FF ratio: {{ metrics.ff_ratio }}</li>
                   <li>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</li>
@@ -62,6 +49,20 @@
             <p>can't get users at this time...</p>
           {{/ users }}
         </div>
+        <div class="col-xs-5">
+            <h2>Recent Timeline &nbsp;&nbsp; <span class="mentions-button" style="font-size:14px;font-weight:normal;">Restore Timeline</span></h2>
+            <ul class="timeline">
+              {{# timeline }}
+                <li>
+                  <h3>@{{ username }}</h3>
+                  <p data-id="{{ tweetid }}">{{ tweet }}</p>
+                </li>
+              {{/ timeline }}
+            </ul>
+            {{^ timeline }}
+              <p>The timeline can't be retreived at this time...</p>
+            {{/ timeline }}
+          </div>
         <div class="col-xs-3">
           <h2>Suggestions</h2>
            <ul class="mentions-list">
