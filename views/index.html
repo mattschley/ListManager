@@ -10,27 +10,25 @@
   </head>
   <body>
     <div style="background-color: rgb(18, 138, 213); color: white;text-align:center;padding-bottom:25px;margin-bottom:15px;">
-      <h1 class="super-header"style="width:1170px;">Funnelist</h1>
-      <h1 style="width:1170px;">{{ title }}</h1>
+      <h1 class="super-header"style="width:1170px;margin:0 auto;">Funnelist</h1>
+      <h1 style="width:1170px;margin:0 auto;">{{ title }}</h1>
     </div>
     <div class="container"  style="width:1170px;margin:0 auto">
       <div class="row">
         <div class="col-xs-4">
-          <h2 style="display:inline-block;">Users</h2>
-          <div style="margin-left:-3px;display:inline-block;">
-            <div>Sort 
+          <h2 style="display:inline-block;margin: 10px 0px;">Users</h2>
+          <div style="display:inline-block;">
+            Sort 
               <select id="sorting-dropdown">
                 <option>Dictionary Hits</option>
                 <option>FF Ratio</option>
                 <option>Frequency</option>
               </select> :   
-              <span class="btn sort-up-button">up </span> 
-              <span class="btn sort-down-button">down</span>
+              <span class="btn sort-up-button">⬆</span> 
+              <span class="btn sort-down-button">⬇</span> &nbsp; | &nbsp; 
               <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified
-            </div>
-            <!--<div>Show: </div>-->
-            <div>Keywords: <input type="text" name="keywords" placeholder="microsoft,apple"><span class="btn add-keywords-btn">Add</span></div>
           </div>
+         <p>Keywords: <input type="text" name="keywords" placeholder="microsoft,apple"><span class="btn add-keywords-btn">Add</span></p>
 
           <ul class="user-list" style="margin-top:10px;">
             {{# users }}
@@ -52,9 +50,8 @@
             <p>can't get users at this time...</p>
           {{/ users }}
         </div>
-        <div class="col-xs-4">
-            <h2>Recent Timeline</h2>
-            <br><button class="btn btn-default mentions-button" >Restore Timeline</button>
+        <div class="col-xs-5">
+            <h2>Recent Timeline</h2><button class="btn btn-default mentions-button" style="margin-bottom:10px;" >Restore Timeline</button>
             <ul class="timeline">
               {{# timeline }}
                 <li>
@@ -67,9 +64,9 @@
               <p>The timeline can't be retreived at this time...</p>
             {{/ timeline }}
           </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           <h2>Suggestions</h2>
-           <ul class="mentions-list">
+           <ul class="mentions-list" style="margin-top:55px;">
               {{# mentions }}
                 <li>
                   <p>
@@ -157,7 +154,7 @@
       });
       {{/ canwrite }}
 
-      
+
       
       function getSortingVal(sortVal){
         if(sortVal == "Dictionary Hits"){
@@ -262,7 +259,16 @@
           }
           totalCount += count;
         });
-        console.log("TOTAL: " + totalCount)
+        console.log("TOTAL: " + totalCount);
+
+        var $userList = $(".user-list > li");
+
+        $userList.sort(function (a, b){
+          return ($(b).data('dicthits')) > ($(a).data('dicthits')) ? 1 : -1;    
+        });
+
+       $userList.detach().appendTo($(".user-list"));
+
       });
 
 
