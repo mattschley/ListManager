@@ -1,7 +1,7 @@
 .super-header{
   font-size: 72px;
   text-align: center;
-  padding-top:35px;
+  padding-top:10px;
   margin-bottom:20px;
   margin-top:0;
 }
@@ -103,7 +103,7 @@
  font-size:12px;
   line-height: 1.2;
   color: #888888;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 0px;
 }
 
 .mentions-more-info p, .mentions-more-info a{
