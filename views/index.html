@@ -17,17 +17,18 @@
       <div class="row">
         <div class="col-xs-4">
           <h2 style="display:inline-block;">Users</h2>
-          <div style="margin-left:10px;display:inline-block;">
+          <div style="margin-left:-3px;display:inline-block;">
             <div>Sort 
               <select id="sorting-dropdown">
                 <option>Dictionary Hits</option>
                 <option>FF Ratio</option>
                 <option>Frequency</option>
-              </select> : &nbsp;  
+              </select> :   
               <span class="btn sort-up-button">up </span> 
               <span class="btn sort-down-button">down</span>
+              <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified
             </div>
-            <div>Show: <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified</div>
+            <!--<div>Show: </div>-->
             <div>Keywords: <input type="text" name="keywords" placeholder="microsoft,apple"><span class="btn add-keywords-btn">Add</span></div>
           </div>
 
@@ -53,7 +54,7 @@
         </div>
         <div class="col-xs-5">
             <h2>Recent Timeline</h2>
-            <br><br> <button class="btn btn-default mentions-button" >Restore Timeline</button>
+            <br><button class="btn btn-default mentions-button" >Restore Timeline</button>
             <ul class="timeline">
               {{# timeline }}
                 <li>
