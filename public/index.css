@@ -110,6 +110,18 @@
   margin-bottom: 5px;
 }
 
+.mentions-button:hover{
+  cursor: pointer; 
+  text-decoration: underline;
+
+}
+
 .sort-up-button, .sort-down-button{
   padding: 0;
 }
+
+a:hover{
+  cursor:pointer;
+}
+
+

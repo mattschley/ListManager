@@ -109,24 +109,20 @@ module.exports = function(app) {
   app.post('/', function(req, res){
     var userName = req.body.user;
     var listName = req.body.list;
-    var dictionaryWords = req.body.words;
-    dictionaryWords = dictionaryWords.replace(/\s+/g, '');
 
-    res.redirect('/'+userName+'/'+listName+"?words="+dictionaryWords);
+    res.redirect('/'+userName+'/'+listName);
   })
 
   app.get('/:user/:list', function(req, res){
     var userName = req.params.user;
     var listName = req.params.list;
 
-    var dictionaryWords = req.query.words;
-
     var listData;
     var userData;
     var statusData;
     
     var d = new Date();
-    var daysAgo = d.setDate(d.getDate() - 2);
+    var daysAgo = d.setDate(d.getDate() - 4);
 
     var actions = {
 
@@ -245,16 +241,7 @@ module.exports = function(app) {
 
           return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
         }
-      ],
-
-      getDictionary: [
-        "fetchMongoTimeline", "getUserInfo", function(cb, results) {
-          console.log("RUNNING getDictionary");
-          console.log("dictionaryWords are: "+dictionaryWords);
-          return dictionary(dictionaryWords,results.getUserInfo, results.fetchMongoTimeline, cb);
-        }
       ]
-
     }
 
     async.auto(actions, function(err, results){
@@ -275,7 +262,6 @@ module.exports = function(app) {
           mentions: results.getMentions.slice(0, 20),
           ownername: userName,
           listname: listName,
-          dictwords: dictionaryWords,
           canwrite: canWrite
         };
           res.render('index', {

@@ -10,8 +10,8 @@
   </head>
   <body>
     <div style="background-color: rgb(18, 138, 213); color: white;text-align:center;padding-bottom:25px;margin-bottom:15px;">
-      <h1 class="super-header">Funnelist</h1>
-      <h1>{{ title }}</h1>
+      <h1 class="super-header"style="width:1170px;">Funnelist</h1>
+      <h1 style="width:1170px;">{{ title }}</h1>
     </div>
     <div class="container"  style="width:1170px;margin:0 auto">
       <div class="row">
@@ -28,6 +28,7 @@
               <span class="btn sort-down-button">down</span>
             </div>
             <div>Show: <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified</div>
+            <div>Keywords: <input type="text" name="keywords" placeholder="microsoft"><span class="btn add-keywords-btn">Add</span></div>
           </div>
 
           <ul class="user-list" style="margin-top:10px;">
@@ -38,8 +39,9 @@
                   <li>FF ratio: {{ metrics.ff_ratio }}</li>
                   <li>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</li>
                   <li>Frequency: {{ metrics.frequency }}</li>
-                  <li>Dictionary Hits: {{metrics.dictionaryHits}}</li>
-                  {{# canwrite }}<li><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></li>
+                  <li class="dict-hits">Dictionary Hits: {{metrics.dictionaryHits}}</li>
+                  {{# canwrite }}
+                    <li><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></li>
                   {{/ canwrite }}
                 </ul>
               </li>
@@ -54,7 +56,7 @@
             <ul class="timeline">
               {{# timeline }}
                 <li>
-                  <h3>@{{ username }}</h3>
+                  <h3><a style="color:rgb(51, 51, 51); " href="https://twitter.com/{{ screen_name }}">@{{ username }}</a></h3>
                   <p data-id="{{ tweetid }}">{{ tweet }}</p>
                 </li>
               {{/ timeline }}
@@ -166,28 +168,33 @@
         }
         console.log("DIDNT GET RIGHT SORTING VAL")
       }
-      
 
       $(".sort-up-button").click(function() {
         var sortVal = $("#sorting-dropdown option:selected").text();
-        
         sortVal = getSortingVal(sortVal);
 
+        var $userList = $(".user-list > li");
 
-        $(".user-list > li").sort(sort_li).appendTo('.user-list');
-        function sort_li(a, b){
-            return ($(b).data(sortVal)) > ($(a).data(sortVal)) ? 1 : -1;    
-        }
+        $userList.sort(function (a, b){
+          return ($(b).data(sortVal)) > ($(a).data(sortVal)) ? 1 : -1;    
+        });
+
+       $userList.detach().appendTo($(".user-list"));
       });
+
       $(".sort-down-button").click(function() {
         var sortVal = $("#sorting-dropdown option:selected").text();
         sortVal = getSortingVal(sortVal);
 
-        $(".user-list > li").sort(sort_li).appendTo('.user-list');
-        function sort_li(a, b){
-            return ($(b).data(sortVal)) <= ($(a).data(sortVal)) ? 1 : -1;    
-        }
+        var $userList = $(".user-list > li");
+
+        $userList.sort(function (a, b){
+          return ($(b).data(sortVal)) <= ($(a).data(sortVal)) ? 1 : -1;    
+        });
+
+       $userList.detach().appendTo($(".user-list"));
       });
+
 
       $("input[name='verified']").click(function(){
         var userArray = $('.user-list > li');
@@ -218,6 +225,44 @@
 
         })
       });
+
+      $(".add-keywords-btn").click(function(){
+        console.log($("input[name='keywords']").val());
+        var keywords = $("input[name='keywords']").val().split(',');
+        var tweetArray= $(".timeline > li");
+        var userArray = $(".user-list > li");
+
+        userArray.each(function(){
+          $(this).attr('data-dicthits', 0);
+        });
+
+        var totalCount = 0;
+
+        tweetArray.each(function(){
+          var count = 0;
+          var tweetText = $(this).find("p").html().toLowerCase();
+          for (var i=0; i < keywords.length; i++){
+            if(tweetText.indexOf(keywords[i].toLowerCase()) >= 0){
+              count++;
+            }
+          }
+          var user = $(this).find("a").html();
+          if (count > 0){
+            userArray.each(function(){
+              var u = $(this).find("a").html();
+              if (u == user){
+                $(this).attr('data-dicthits', Number($(this).attr('data-dicthits')) + count);
+                $(this).find('.dict-hits').html("Dictionary Hits: "+ $(this).attr('data-dicthits'));
+                return false;
+              }
+            });
+          }
+          totalCount += count;
+        });
+        console.log("TOTAL: " + totalCount)
+      });
+
+
 
     </script>
   </body>
