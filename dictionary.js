@@ -1,5 +1,11 @@
+/*
+Given a set of dictionary words, this finds the number of times each twitter profile has used them.
+NOTE: as a last second-change to the project that put the dictionary word input into the frontend,
+we ended up adapting this code into a frontend javascript function. We're keeping this here, however,
+in case a future programmer converts that into an AJAX request.
+*/
+
 var tweetDB = require('./models/tweet.js');
-var fs = require('fs');
 
 module.exports = function(dictionaryWords,listData, timelineData, cb){
 
@@ -27,23 +33,12 @@ module.exports = function(dictionaryWords,listData, timelineData, cb){
         }
     }
     cb(null);
-    //console.log(tweet_data);
-    //console.log("number of tweets is:" + length);
-    //console.log(listData.users[1]);
-    //console.log(cat);
-    //console.log(listData);
-    // for(j=0; j < listData.users.length; j++){
-    //          var count = listData.users[j].metrics.dictionaryHits;
-    //          var name = listData.users[j].screen_name; 
-    //          console.log("User "+ name +" has "+count+" dictionaryHits"); }
-    //console.log(JSON.stringify(listData));
-    // listData contains num of DictionaryHits... would be nice to add specific hits 
 }
 
 
-
-
-
+/*
+Found here: http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+*/
 function CSVToArray( strData, strDelimiter ){
         // Check to see if the delimiter is defined. If not,
         // then default to comma.

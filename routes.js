@@ -1,14 +1,12 @@
 var Twit = require ('twit');
 var async = require ('async');
 var Metrics = require('./metrics');
-var Statuses = require('./statuses');
-var tweetDB = require('./models/tweet.js');
+var tweetDB = require('./models/tweet');
 var mongoose = require('mongoose');
-var dictionary = require('./dictionary.js');
-var Mentions = require('./mentions.js');
+var Mentions = require('./mentions');
+var helper = require('./helper')
 
-//https://github.com/ttezel/twit
-
+//this is for the funnelist338 account
 var CONSUMERKEY =  'GryVkSV5M6j1a9BK2KU2tJ7QP';
 var CONSUMERSECRET = 'sOhrQiTvKkLjR9mkKU5sUD2x3hP4TT7vsUKMZJ6uMyqTpKtFbm';
 var ACCESSTOKEN =  '2857431705-ZNX4nNcx6laZJozJpVYhjXvQmJawBXm3VV2xlLO';
@@ -23,29 +21,6 @@ var T = new Twit({
 
 mongoose.connect('mongodb://admin:eecs338@ds051990.mongolab.com:51990/heroku_app30534609');
 
-function addToDB (userName, listName, statusData, cb) {
-  var tweet = new tweetDB();
-  tweet.listusername = userName;
-  tweet.listname = listName;
-  tweet.username = statusData.user.screen_name;
-  tweet.tweetid = statusData.id;
-  tweet.tweet = statusData.text;
-  tweet.tweeted_at = statusData.created_at;
-  tweet.urls = statusData.entities.urls;
-  tweet.mentions = statusData.entities.user_mentions;
-  tweet.favorites = statusData.favorite_count;
-  tweet.retweets = statusData.retweet_count;
-  tweet.save( function(err) {
-    if(err){
- //       console.log("error posting: " + err)
-        cb(null);
-    }
-    else{
-      cb(null);
-    }
-  });
-}
-
 module.exports = function(app) {
 
   app.use(function(req, res, next){
@@ -53,12 +28,15 @@ module.exports = function(app) {
     next();
   });
 
+
+  //Checks the API rate limit status for your key
   app.get('/api_status', function(req, res){
     T.get('application/rate_limit_status', function(err, data, response){
       res.send(data);
     });
   });
 
+  //Post request for adding a user to a list
   app.post('/adduser', function(req, res){
     var listName = req.body.list;
     var ownerName = req.body.owner;
@@ -76,6 +54,7 @@ module.exports = function(app) {
     });
   });
 
+  //Post request for removing a user from a list
   app.post('/removeuser', function(req, res){
     var listName = req.body.list;
     var ownerName = req.body.owner;
@@ -99,6 +78,8 @@ module.exports = function(app) {
     });
   });
 
+
+  //homepage
   app.get('/', function(req, res) {
     res.render('home', {
       title: 'Welcome!',
@@ -106,6 +87,7 @@ module.exports = function(app) {
     });
   });
 
+  //gets the form items and passes it to the right url
   app.post('/', function(req, res){
     var userName = req.body.user;
     var listName = req.body.list;
@@ -113,7 +95,11 @@ module.exports = function(app) {
     res.redirect('/'+userName+'/'+listName);
   })
 
+
+  //loads the page for a user's list. 
+  //e.g. for @funnelist338's list called "Tech-News", itd be "/funnelist338/tech-news"
   app.get('/:user/:list', function(req, res){
+
     var userName = req.params.user;
     var listName = req.params.list;
 
@@ -121,106 +107,67 @@ module.exports = function(app) {
     var userData;
     var statusData;
     
+    //can change 'days ago' to whatever time period. currently last 4 days
     var d = new Date();
     var daysAgo = d.setDate(d.getDate() - 4);
 
+    //Building a giant object of different functions each with 
+    //specified dependencies that will be passed to async.auto
     var actions = {
 
-      //WORKS
+      //gets the list of users on the list
       getUserInfo: function(cb){  
-
-        console.log("RUNNING getUsersInfo");
-
         T.get('lists/members', {slug: listName, owner_screen_name: userName, count: 5000}, function(err, data, response){
           if(err){
             console.log("users/show error: "+err);
           }
           else{
-            console.log("FINISHING getUsersInfo");
             cb(null, data);
           }
         });
       },
 
-        //WORKS
-      getCurrentMongoTimeline: function(cb){  
+      //gets the latest tweets from the lists' timeline and adds it to the mongo db
+      updateMongoTimeline:  function(cb, results){ 
 
-        console.log("RUNNING getCurrentMongoTimeline");
-
-        tweetDB.find({listusername: userName, listname: listName}).where('tweeted_at').gt(daysAgo).exec(function(err, data){
+        T.get('lists/statuses', {slug: listName, owner_screen_name: userName, count: 1000}, function(err, data, responses){
           if(err){
-            console.log("error getting first mongo tweets: "+err);
+            console.log('cant even find one tweet');
+            console.log(err);
           }
-          console.log("no error");
-          var i;
-          var latestTweet = 0;
-          for(i=0; i < data.length; i++){
-            if(data[i].tweetid > latestTweet){
-              latestTweet = data[i].tweetid;
-            }
+          else{
+            //adds all the tweets to the mongoDB asynchronously
+            async.each(data, function(tweet, callback){
+              helper.addToDB(userName, listName, tweet, callback);
+            }, function(err){
+              if(err){
+                console.log("adding to DB error: "+err);
+              }
+              else{
+               cb(null);
+              }
+            });
           }
-          var results = {
-            tweetData: data,
-            latestTweetID: latestTweet
-          }
-          console.log("FINISHING getCurrentMongoTimeline");
-          cb(null, results);
         });
-      },
+      },   
 
-      // WORKS, FOR SINGLE INSERTION
-      updateMongoTimeline: [
-        "getCurrentMongoTimeline", function(cb, results){ 
-
-          console.log("RUNNING updateMongoTimeline");
-
-          var latestMongoTweet = results.getCurrentMongoTimeline.latestTweetID;
-          var mongoTweetData = results.getCurrentMongoTimeline.tweetData;
-
-          T.get('lists/statuses', {slug: listName, owner_screen_name: userName, count: 1000}, function(err, data, responses){
-            if(err){
-              console.log('cant even find one tweet');
-            }
-            else{
-              console.log("got tweets!");
-              async.each(data, function(tweet, callback){
-                addToDB(userName, listName, tweet, callback);
-              }, function(err){
-                if(err){
-                  console.log("adding to DB error: "+err);
-                }
-                else{
-                  console.log("FINISHING updateMongoTimeline");
-                 cb(null);
-                }
-              });
-            }
-          });
-        }  
-      ], 
-
-      //WORKS
+      //gets the full list of tweets from the timeline 
       fetchMongoTimeline: [   
         "updateMongoTimeline", function(cb){
 
-          console.log("RUNNING fetchMongoTimeline");
-
-          tweetDB.find({listusername: userName, listname: listName}).sort('-tweetid').limit(500).exec(function(err, data){
+          tweetDB.find({listusername: userName, listname: listName}).where('tweeted_at').gt(daysAgo).sort('-tweetid').limit(500).exec(function(err, data){
             if(err){
               console.log("there was an error");
-            }
-            else{
-              console.log('there was data');
             }
             return cb(null, data);
           });
         }
       ],
 
+      //calculates the metrics for the users on the list
       doMetrics: [
         "getUserInfo", function(cb, results){
-          console.log("at doMetrics");
-
+          //again, done asynchronously
           async.each(results.getUserInfo.users, function(info, callback){
             info = new Metrics(info, callback);
           }, function(err){
@@ -228,34 +175,36 @@ module.exports = function(app) {
               console.log("metrics error: "+err);
             }
             else{
-              console.log("FINISHING doMetrics");
              cb(null);
             }
           });
         }
       ],
 
+      //sees who is mentioned on the timeline that isnt on the list
       getMentions: [
         "fetchMongoTimeline", "getUserInfo", function(cb, results) {
-          console.log("RUNNING getMentions");
-
           return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
     }
 
+
+    //run all the functions in actions, asynchronously unless otherwise specified
     async.auto(actions, function(err, results){
       if(err){
         console.log("ASYNC AUTO ERR: "+err);
       }
       else{
-        console.log("RESULTS\n\n");
 
+        //since only @funnelist338 works for the prototype, dont offer
+        //adding/removing for other users since it wont work otherwise
         var canWrite = false;
         if(userName == "funnelist338"){
           canWrite = true;
         }
 
+        //build the template data to be passed to our Mustache template
         res.locals = {
           timeline: results.fetchMongoTimeline,
           users: results.getUserInfo.users,
@@ -264,59 +213,11 @@ module.exports = function(app) {
           listname: listName,
           canwrite: canWrite
         };
-          res.render('index', {
+          res.render('dashboard', {
           title: '@' + userName + '/' + listName,
           partials: {}
         });
       }
     })
   });
-} 
-
-
-
-              /*
-                WORKING ON GETTING ALL THE TWEETS WITHIN  A CERTAIN TIME PERIOD...MORE OR LESS PAGING
-
-              var count = mongoTweetData.length;
-              var maxID = data[0].id;
-              var sinceID = latestMongoTweet;
-              async.whilst(
-                function () { return count < 500; }, 
-                function (callback) {
-
-                  console.log("calling lists/statuses, maxID="+maxID);
-                  console.log("listName: "+listName + ", userName: "+userName);
-
-                  T.get('lists/statuses', {slug: listName, owner_screen_name: userName, max_id: maxID, since_id: sinceID, count: 200}, function(err, data, response){
-                    if (err){              
-                      console.log("error getting tweets from twitter: "+err);
-                      callback(err);
-                    }
-                    else{
-                      if (data.length !=0){
-                        console.log("got data of length: "+data.length);
-                        async.each(data, addToDB.bind(null, userName, listName), function (err){
-                          if(err){
-                            console.log("Async error: "+err);
-                          }
-                          maxID = data[data.length-1].id - 1;
-                          count += data.length;
-                        });
-                        callback(null);
-                      }
-                      else{
-                        console.log("Data was of length 0");
-                      }
-                    }
-                  });
-                },
-                function (err) {
-                    console.log("FINISHING getCurrentMongoTimeline");
-                    return cb(err);
-                }
-              );
-            }
-          });
-        }
-      ], */
+}

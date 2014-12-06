@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Funnelist</title>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/index.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="super-header">
+      <h1 class="project-title">Funnelist</h1>
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-4 user-column">
+          <h2>Users</h2>
+          <div>
+            Sort 
+              <select id="sorting-dropdown">
+                <option>Dictionary Hits</option>
+                <option>FF Ratio</option>
+                <option>Frequency</option>
+              </select> :   
+              <span class="btn sort-up-button">⬆</span> 
+              <span class="btn sort-down-button">⬇</span> &nbsp; | &nbsp; 
+              <input type="checkbox" checked name="verified">Verified <input type="checkbox" checked name="notverified">Not Verified
+          </div>
+         <p>Keywords: <input type="text" name="keywords" placeholder="microsoft,apple"><span class="btn add-keywords-btn">Add</span></p>
+          <ul class="user-list">
+            {{# users }}
+              <li data-dicthits = "{{ metrics.dictionaryHits }}" data-ffratio="{{ metrics.ff_ratio }}" data-freq="{{ metrics.frequency }}" data-verified="{{ metrics.verified }}">
+                <h3><a href="https://twitter.com/{{ screen_name }}">@{{ screen_name }}</a></h3>
+                <ul class="metrics-list">
+                  <li>FF ratio: {{ metrics.ff_ratio }}</li>
+                  <li>{{^ metrics.verified }}Not {{/ metrics.verified }}Verified</li>
+                  <li>Frequency: {{ metrics.frequency }}</li>
+                  <li class="dict-hits">Dictionary Hits: {{metrics.dictionaryHits}}</li>
+                  {{# canwrite }}
+                    <li><a class="delete-button" data-user="{{ screen_name }}">Remove user</a></li>
+                  {{/ canwrite }}
+                </ul>
+              </li>
+            {{/ users }}
+          </ul>
+        </div>
+
+        <div class="col-xs-5 timeline-column">
+            <h2>Recent Timeline</h2><button class="btn btn-default mentions-button">Restore Timeline</button>
+            <ul class="timeline">
+              {{# timeline }}
+                <li>
+                  <h3><a href="https://twitter.com/{{ username }}">@{{ username }}</a></h3>
+                  <p data-id="{{ tweetid }}">{{ tweet }}</p>
+                </li>
+              {{/ timeline }}
+            </ul>
+          </div>
+        <div class="col-xs-3 suggestions-column">
+          <h2>Suggestions</h2>
+           <ul class="mentions-list">
+              {{# mentions }}
+                <li>
+                  <p>
+                    <strong>{{ username }}: </strong>   
+                     Mentioned {{ count }} times. 
+                  </p>   
+                  <div class="mentions-more-info">
+                  <p><a target="_blank" href="https://twitter.com/{{ username }}">View profile</a></p> 
+                  <p class="mentions-button" data-ids="{{ mentionedTweets }}">See mentioned tweets</p>
+                    {{# canwrite }} 
+                  <p><a class="add-button" data-user="{{ username }}">Add user</a></p>
+                   {{/ canwrite }}
+                  </div>
+                </li>
+              {{/ mentions }}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/index.js"></script>
+    {{# canwrite }}
+      <script src="/modify-list.js"></script>
+    {{/ canwrite }}
+  </body>
+</html>

@@ -2,21 +2,21 @@
   "name": "funnelist",
   "version": "1.0.0",
   "description": "EECS 338 Project",
-  "main": "app.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/davidmichaelryan/funnelist.git"
   },
   "dependencies": {
-    "express": "*",
-    "twit": "*", 
-    "morgan": "*",
-    "body-parser": "*",
-    "hogan-express": "*",
-    "mongoose": "*",
-    "async": "*"
+    "async": "*0.9.*",
+    "body-parser": "1.10.*",
+    "express": "4.1.*",
+    "hogan-express": "0.5.*",
+    "mongoose": "3.8.*",
+    "morgan": "1.5.*",
+    "twit": "1.1.*"
   },
-  "author": "David Ryan",
+  "author": "David Ryan, Aash Chalasani, Matt Schley, and Clayton Gentry",
   "license": "ISC",
-  "homepage": "https://github.com/davidmichaelryan/funnelist"
+  "homepage": "funnelist.herokuapp.com"
 }

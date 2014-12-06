@@ -1,3 +1,8 @@
+/*
+Given a timeline and a list of users that are not part of the timeline, 
+finds the number of times that user is mentioned.
+*/
+
 var tweetDB = require('./models/tweet.js');
 module.exports = function(listData, timelineData, callback){
 
@@ -48,11 +53,8 @@ module.exports = function(listData, timelineData, callback){
 	for (var name in mentionedUsers){
 		sortedMentions.push({'username': name, 'count': mentionedUsers[name], 'tweetUser': tweetUsers[name], 
 		'mentionedTweets': mentionedTweets[name]})
-	}
-		
+	}		
+
 	sortedMentions.sort(function(a, b) {return b.count - a.count})
-	//console.log(sortedMentions);
-
-
 	callback(null, sortedMentions);
 }

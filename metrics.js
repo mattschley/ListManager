@@ -1,13 +1,11 @@
 /*
-
-  MAKE FUNCTIONS UP HERE
-
+  calculates the various metrics related to a specific user and puts in 
+  a handy JSON object.
 */
 
 module.exports = function(listMemberData, callback){
- 
-var userList = listMemberData; 
-var d = new Date();
+  var userList = listMemberData; 
+  var d = new Date();
 
   var user = userList;
   var location = userList.location;
@@ -28,16 +26,10 @@ var d = new Date();
   var days = hours/24;
   var frequency = (statuses_count/days).toFixed(1);
   var dictionaryHits = 0;
-  // add metric data to metrics attribute in JSON object
 
+  // add metric data to metrics attribute in JSON object
   listMemberData.metrics = {"followers": followers_count, "following": following, "ff_ratio": ff_ratio, "verified" : verified, "last_active" : last_tweet_time_date, "num_lists_on" : listed_count, 
   "created_at": created_at, "location": location, "statuses_count": statuses_count, "frequency" : frequency, "dictionaryHits" : dictionaryHits };
 
   callback(null);
-
-
-  /*
-    CALL FUNCTIONS HERE
-  */
-
 }

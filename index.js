@@ -19,6 +19,6 @@ app.engine('html', require('hogan-express'));
 require('./routes')(app);
 
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log("up and running, port "+port)
 exports = module.exports = app;
 
