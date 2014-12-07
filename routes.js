@@ -1,9 +1,9 @@
 var Twit = require ('twit');
 var async = require ('async');
+var mongoose = require('mongoose');
 var Metrics = require('./metrics');
 var tweetDB = require('./models/tweet');
-var mongoose = require('mongoose');
-var Mentions = require('./mentions');
+var Suggestions = require('./suggestions');
 var helper = require('./helper')
 
 //this is for the funnelist338 account
@@ -184,7 +184,7 @@ module.exports = function(app) {
       //sees who is mentioned on the timeline that isnt on the list
       getMentions: [
         "fetchMongoTimeline", "getUserInfo", function(cb, results) {
-          return Mentions(results.getUserInfo, results.fetchMongoTimeline, cb);
+          return Suggestions(results.getUserInfo, results.fetchMongoTimeline, cb);
         }
       ]
     }
