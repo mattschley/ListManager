@@ -60,6 +60,10 @@ module.exports = function(app) {
     var ownerName = req.body.owner;
     var userName = req.body.user;
 
+    console.log(userName)
+    console.log(ownerName)
+    console.log(listName)
+
     T.post('lists/members/destroy', {slug: listName, owner_screen_name: ownerName, screen_name: userName}, function(err, data, response){
       if(err){
         console.log("ERROR: "+err);

@@ -86,7 +86,34 @@
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/index.js"></script>
     {{# canwrite }}
-      <script src="/modify-list.js"></script>
+    <script>
+      $('.add-button').click(function() {  
+          var username = $(this).attr('data-user');
+          $.post( "/adduser", 
+            {
+              list: "{{ listname }}",
+              owner: "{{ ownername }}",
+              user: username
+            },
+            function( data ) {
+              alert( "User was added to the list" );
+          });
+        });
+
+
+        $('.delete-button').click(function() {  
+          var username = $(this).attr('data-user');
+          $.post( "/removeuser", 
+            {
+              list: "{{ listname }}",
+              owner: "{{ ownername }}",
+              user: username
+            },
+            function( data ) {
+              alert( "User was deleted from the list" );
+          });
+        });
+      </script>
     {{/ canwrite }}
   </body>
 </html>
