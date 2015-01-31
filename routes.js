@@ -19,7 +19,8 @@ var T = new Twit({
     access_token_secret:  ACCESSTOKENSECRET
 });
 
-mongoose.connect('mongodb://admin:eecs338@ds051990.mongolab.com:51990/heroku_app30534609');
+// 'mongodb://admin:eecs338@ds051990.mongolab.com:51990/heroku_app30534609'
+mongoose.connect('mongodb://heroku_app33624747:wildcats@ds039411.mongolab.com:39411/heroku_app33624747');
 
 module.exports = function(app) {
 
