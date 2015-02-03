@@ -21,7 +21,7 @@ var T = new Twit({
 
 // 'mongodb://admin:eecs338@ds051990.mongolab.com:51990/heroku_app30534609'
 // 'mongodb://matt:wildcats1@ds039411.mongolab.com:39411/heroku_app33624747'
-mongoose.connect('mongodb://heroku_app33624747:wildcats@ds039411.mongolab.com:39411/heroku_app33624747');
+mongoose.connect('mongodb://heroku_app33624747:wildcats1@ds039411.mongolab.com:39411/heroku_app33624747');
 
 module.exports = function(app) {
 
